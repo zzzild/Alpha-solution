@@ -1,1 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+
 @import "tailwindcss";
+
+* {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.swiper-pagination {
+  margin-top: 1.5rem;
+}
+
+@theme {
+  --color-primary: #fff7e9;
+  --color-green-apple: #bbd8a3;
+  --color-ink: #2a4759;
+  --color-wolf: #6b7280;
+  --color-orange: #f97316;
+}
+
+.container {
+  max-width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1320px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+.navbar-fixed {
+  position: fixed;
+  z-index: 9999;
+  background-color: rgba(75, 85, 99, 0.7); /* bg-gray-600 + opacity */
+  backdrop-filter: blur(5px);
+  box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+/***** Hamburger *****/
+.hamburger-line {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  height: 2px;
+  width: 30px;
+  background-color: white;
+}
+
+.hamburger-active > span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger-active > span:nth-child(2) {
+  transform: scale(0);
+}
+
+.hamburger-active > span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+#toggle:checked ~ label div.toggle-circle {
+  transform: translateX(0.75rem);
+}
+
+/***** Swiper *****/
+.swiper-slide {
+  height: auto !important;
+}
+
+.swiper-content {
+  height: 100% !important;
+}
+
+.swiper-wrapper {
+  padding-bottom: 70px;
+}
+
+.swiper-container-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+  bottom: 0px !important;
+}
+
+/***** Breadcrumbs *****/
+.breadcrumbs li {
+  color: #374151;
+  display: inline;
+  max-width: 450px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumbs li + li::before {
+  content: ">";
+  /* content: url(img/arrow.right.svg); */
+  margin: 0 4px;
+}
+
+.breadcrumbs li + li a {
+  margin-left: 4px;
+}
+
+/***** Back to top *****/
+#backtotopp {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #65a30d;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
