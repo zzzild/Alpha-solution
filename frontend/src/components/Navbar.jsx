@@ -71,7 +71,7 @@ const ChevronRight = () => (
   </svg>
 );
 
-// Data
+// Dummy Data
 const NAV_ITEMS = [
   {
     label: "Kejuruan",
@@ -113,11 +113,12 @@ function Logo() {
   return (
     <div className="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
       {/* logo */}
-      <div>
-        <div className="text-[17px] font-extrabold tracking-tight leading-none">
-          <span className="text-orange-700">ALPHA SOLUSI</span>
-        </div>
-      </div>
+      <a
+        href="/"
+        className="text-[17px] font-extrabold tracking-tight leading-none text-orange-700"
+      >
+        APLHA SOLUSI
+      </a>
     </div>
   );
 }
@@ -245,8 +246,7 @@ export default function Navbar() {
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
             />
-            <button className="text-gray-400 hover:text-gray-600">
-            </button>
+            <button className="text-gray-400 hover:text-gray-600"></button>
           </div>
 
           {/* Mobile search icon */}
@@ -259,12 +259,18 @@ export default function Navbar() {
 
           {/* Desktop auth buttons */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-            <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:border-blue-400 transition-colors">
+            <a
+              href="/login"
+              className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:border-blue-400 transition-colors"
+            >
               Masuk
-            </button>
-            <button className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-md shadow-blue-200 transition-colors">
+            </a>
+            <a
+              href="/register"
+              className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-md shadow-blue-200 transition-colors"
+            >
               Daftar
-            </button>
+            </a>
           </div>
         </div>
 

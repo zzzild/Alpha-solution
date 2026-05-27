@@ -1,22 +1,8 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 // Icons
-const LogoIcon = () => (
-  <svg
-    className="w-3.5 h-3.5"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="white"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-  >
-    <rect x="3" y="3" width="7" height="7" />
-    <rect x="14" y="3" width="7" height="7" />
-    <rect x="14" y="14" width="7" height="7" />
-    <rect x="3" y="14" width="7" height="7" />
-  </svg>
-);
 const ChevronDown = () => (
   <svg
     className="w-3.5 h-3.5"
@@ -308,16 +294,18 @@ function TrainingCard({ training }) {
         </div>
       </div>
 
-      <div className="p-4 flex flex-col gap-1.5 flex-1">
+      <div className="p-4 flex flex-col flex-1">
         <div className="text-[11px] font-semibold text-blue-700">
           {training.id}
         </div>
+
         <div className="text-[12px] text-gray-500">{training.category}</div>
-        <div className="text-[13.5px] font-bold text-gray-900 leading-snug line-clamp-2">
+
+        <div className="text-[13.5px] font-bold text-gray-900 leading-snug line-clamp-2 min-h-[40px]">
           {training.title}
         </div>
 
-        <div className="flex flex-wrap gap-1.5 mt-1">
+        <div className="flex flex-wrap gap-1.5 mt-2 min-h-[28px]">
           {training.tags.map((tag) => (
             <span
               key={tag}
@@ -328,29 +316,20 @@ function TrainingCard({ training }) {
           ))}
         </div>
 
-        <div className="flex items-end justify-between mt-2">
-          <div>
-            <div className="text-[10.5px] text-gray-400">Harga</div>
-            <div className="text-lg font-extrabold text-gray-900">Gratis</div>
+        <div className="mt-auto">
+          <div className="flex items-end justify-between mt-3">
+            <div>
+              <div className="text-[10.5px] text-gray-400">Harga</div>
+              <div className="text-lg font-extrabold text-gray-900">Gratis</div>
+            </div>
           </div>
-        </div>
 
-        <button className="w-full py-2.5 mt-2 rounded-lg bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white text-sm font-bold transition-colors cursor-pointer">
-          Lihat Pelatihan
-        </button>
+          <button className="w-full py-2.5 mt-2 rounded-lg bg-primary hover:bg-lightprimary active:bg-lightprimary text-white text-sm font-bold transition-colors cursor-pointer">
+            Lihat Pelatihan
+          </button>
+        </div>
       </div>
 
-      <div className="px-4 py-2.5 border-t border-gray-100 flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-md bg-blue-700 flex items-center justify-center flex-shrink-0">
-          <LogoIcon />
-        </div>
-        <div>
-          <div className="text-[9.5px] text-gray-400">Lembaga pelatihan</div>
-          <div className="text-[11.5px] font-bold text-gray-800">
-            {training.lembaga}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
@@ -386,12 +365,12 @@ export default function PelatihanPage() {
         @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
       `}</style>
 
-      <div className="min-h-screen bg-gray-50 font-sans">
+      <div className="min-h-screen bg-gray-50">
         <Navbar />
 
         <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6">
-            Pelatihan Vokasi Nasional
+            Pelatihan
           </h1>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
@@ -469,7 +448,7 @@ export default function PelatihanPage() {
                 </span>{" "}
                 pelatihan ditemukan
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5">
                 {filtered.map((t) => (
                   <TrainingCard key={t.id} training={t} />
                 ))}
@@ -524,6 +503,8 @@ export default function PelatihanPage() {
             </button>
           </div>
         </div>
+
+        <Footer />
       </div>
     </>
   );

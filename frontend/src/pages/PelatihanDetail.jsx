@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Navbar from "./../components/Navbar";
+import Navbar from "../components/Navbar";
 
 // Icons
 const CheckIcon = () => (
   <svg
-    className="w-4 h-4 text-blue-700 flex-shrink-0"
+    className="w-4 h-4 text-secondary flex-shrink-0"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -353,7 +353,7 @@ function ModalDaftar({ training, onClose }) {
               <div className="overflow-y-auto flex-1 px-5 py-5 space-y-4">
                 {/* Info pelatihan */}
                 <div className="bg-blue-50 rounded-xl p-3.5 border border-blue-100 flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-700 flex items-center justify-center flex-shrink-0 mt-0.5 text-white">
+                  <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0 mt-0.5 text-white">
                     <CertIcon />
                   </div>
                   <div>
@@ -448,7 +448,7 @@ function ModalDaftar({ training, onClose }) {
                         key={jk}
                         type="button"
                         onClick={() => set("jenisKelamin", jk)}
-                        className={`flex-1 py-2.5 rounded-xl border text-[13px] font-semibold transition-colors ${form.jenisKelamin === jk ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
+                        className={`flex-1 py-2.5 rounded-xl border text-[13px] font-semibold transition-colors ${form.jenisKelamin === jk ? "border-blue-600 bg-blue-50 text-secondary" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
                       >
                         {jk}
                       </button>
@@ -532,7 +532,7 @@ function ModalDaftar({ training, onClose }) {
                   <label className="flex items-start gap-3 cursor-pointer group">
                     <div
                       onClick={() => set("persetujuan", !form.persetujuan)}
-                      className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 border-2 transition-colors ${form.persetujuan ? "bg-blue-700 border-blue-700" : "border-gray-300 group-hover:border-blue-400"}`}
+                      className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 border-2 transition-colors ${form.persetujuan ? "bg-secondary border-secondary" : "border-gray-300 group-hover:border-blue-400"}`}
                     >
                       {form.persetujuan && (
                         <svg
@@ -575,7 +575,7 @@ function ModalDaftar({ training, onClose }) {
                 </button>
                 <button
                   onClick={handleSubmit}
-                  className="flex-[2] py-3 rounded-xl bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white text-[14px] font-bold shadow-md shadow-blue-200 transition-colors"
+                  className="flex-[2] py-3 rounded-xl bg-secondary hover:bg-blue-800 active:bg-blue-900 text-white text-[14px] font-bold shadow-md shadow-blue-200 transition-colors"
                 >
                   Kirim Pendaftaran
                 </button>
@@ -616,7 +616,7 @@ function ModalDaftar({ training, onClose }) {
 
               <button
                 onClick={onClose}
-                className="w-full max-w-sm py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white text-[14px] font-bold transition-colors"
+                className="w-full max-w-sm py-3 rounded-xl bg-secondary hover:bg-blue-800 text-white text-[14px] font-bold transition-colors"
               >
                 Selesai
               </button>
@@ -632,7 +632,7 @@ function ModalDaftar({ training, onClose }) {
 function SectionLabel({ label }) {
   return (
     <div className="flex items-center gap-2 pt-1">
-      <span className="text-[11.5px] font-bold text-blue-700 uppercase tracking-wider">
+      <span className="text-[11.5px] font-bold text-secondary uppercase tracking-wider">
         {label}
       </span>
       <div className="flex-1 h-px bg-blue-100" />
@@ -681,7 +681,7 @@ function Breadcrumb() {
           <button
             className={
               i === arr.length - 1
-                ? "text-blue-700 font-medium"
+                ? "text-secondary font-medium"
                 : "hover:text-gray-600 transition-colors"
             }
           >
@@ -715,7 +715,7 @@ function KurikulumItem({ item, index }) {
         className="w-full flex items-center justify-between px-4 py-3.5 bg-white hover:bg-gray-50 transition-colors text-left"
       >
         <div className="flex items-center gap-3">
-          <span className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center text-[11px] font-bold text-blue-700 flex-shrink-0">
+          <span className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center text-[11px] font-bold text-secondary flex-shrink-0">
             {index + 1}
           </span>
           <div>
@@ -796,7 +796,7 @@ export default function DetailPelatihan() {
               <span className="bg-white/90 backdrop-blur-sm rounded-md px-2.5 py-1 text-[11px] font-bold text-gray-800">
                 {t.badge}
               </span>
-              <span className="bg-blue-700/90 backdrop-blur-sm rounded-md px-2.5 py-1 text-[11px] font-bold text-white">
+              <span className="bg-secondary/90 backdrop-blur-sm rounded-md px-2.5 py-1 text-[11px] font-bold text-white">
                 {t.category}
               </span>
             </div>
@@ -847,36 +847,6 @@ export default function DetailPelatihan() {
                 </div>
               </div>
 
-              {/* Lembaga strip */}
-              <div className="bg-white rounded-2xl border border-gray-100 px-5 py-3.5 mb-4 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-blue-700 flex items-center justify-center flex-shrink-0">
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  >
-                    <rect x="3" y="3" width="7" height="7" />
-                    <rect x="14" y="3" width="7" height="7" />
-                    <rect x="14" y="14" width="7" height="7" />
-                    <rect x="3" y="14" width="7" height="7" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-[10.5px] text-gray-400">
-                    Diselenggarakan oleh
-                  </div>
-                  <div className="text-[13.5px] font-bold text-gray-800">
-                    {t.lembaga}
-                  </div>
-                </div>
-                <button className="ml-auto text-[12px] text-blue-700 font-semibold hover:underline flex items-center gap-1">
-                  Lihat profil <ChevronRightIcon />
-                </button>
-              </div>
-
               {/* Tabs */}
               <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-4">
                 <div className="flex border-b border-gray-100 overflow-x-auto">
@@ -884,7 +854,7 @@ export default function DetailPelatihan() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`px-5 py-3.5 text-[13px] font-semibold whitespace-nowrap transition-colors flex-shrink-0 ${activeTab === tab.id ? "text-blue-700 border-b-2 border-blue-700 -mb-px bg-blue-50/40" : "text-gray-500 hover:text-gray-700"}`}
+                      className={`px-5 py-3.5 text-[13px] font-semibold whitespace-nowrap transition-colors flex-shrink-0 ${activeTab === tab.id ? "text-secondary border-b-2 border-secondary -mb-px bg-blue-50/40" : "text-gray-500 hover:text-gray-700"}`}
                     >
                       {tab.label}
                     </button>
@@ -916,7 +886,7 @@ export default function DetailPelatihan() {
                             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-50 border border-blue-100"
                           >
                             <CheckIcon />
-                            <span className="text-[12.5px] font-semibold text-blue-700">
+                            <span className="text-[12.5px] font-semibold text-secondary">
                               {f}
                             </span>
                           </div>
@@ -950,7 +920,7 @@ export default function DetailPelatihan() {
                             key={i}
                             className="flex items-start gap-3 p-3.5 rounded-xl bg-gray-50 border border-gray-100"
                           >
-                            <span className="w-5 h-5 rounded-full bg-blue-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="w-5 h-5 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
                               <span className="text-[10px] font-bold text-white">
                                 {i + 1}
                               </span>
@@ -1036,11 +1006,11 @@ export default function DetailPelatihan() {
                   {/* ← Tombol ini memicu modal */}
                   <button
                     onClick={() => setShowModal(true)}
-                    className="w-full py-3 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white rounded-xl text-[14px] font-bold shadow-md shadow-blue-200 transition-colors cursor-pointer"
+                    className="w-full py-3 bg-primary hover:bg-lightprimary active:bg-lightprimary text-white rounded-xl text-[14px] font-bold shadow-md shadow-blue-200 transition-colors cursor-pointer"
                   >
                     Daftar Sekarang
                   </button>
-                  <button className="w-full py-3 border border-blue-200 text-blue-700 hover:bg-blue-50 rounded-xl text-[13px] font-semibold transition-colors cursor-pointer">
+                  <button className="w-full py-3 border border-blue-200 text-secondary hover:bg-blue-50 rounded-xl text-[13px] font-semibold transition-colors cursor-pointer">
                     Hubungi Lembaga
                   </button>
                 </div>
