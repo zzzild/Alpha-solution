@@ -1,9 +1,9 @@
-import Rekomendasi from "../components/Rekomendasi";
+// import Rekomendasi from "../components/Rekomendasi";
 
 const Home = () => {
   return (
     <div>
-      <Rekomendasi />
+      {/* <Rekomendasi /> */}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Detail from "./pages/Detail";
+import Paket from "./pages/Paket";
+import PaketDetail from "./pages/PaketDetail";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -12,8 +13,9 @@ const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/s" element={<Home />} />
+        <Route path="/paket" element={<Paket />} />
+        <Route path="/detail" element={<PaketDetail />} />
       </Routes>
     </div>
   );
