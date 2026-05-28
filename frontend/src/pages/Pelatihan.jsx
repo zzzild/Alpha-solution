@@ -282,55 +282,58 @@ function FilterAccordion({ title, items, selected, onToggle }) {
 
 function TrainingCard({ training }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col hover:border-blue-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-200 group">
-      <div className="relative overflow-hidden aspect-video">
-        <img
-          src={training.img}
-          alt={training.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 text-[11px] font-semibold text-gray-800">
-          {training.badge}
-        </div>
-      </div>
-
-      <div className="p-4 flex flex-col flex-1">
-        <div className="text-[11px] font-semibold text-blue-700">
-          {training.id}
+    <a href="/pelatihandetail" className="h-full">
+      <div className="h-full bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col hover:border-blue-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-200 group">
+        <div className="relative overflow-hidden aspect-video">
+          <img
+            src={training.img}
+            alt={training.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 text-[11px] font-semibold text-gray-800">
+            {training.badge}
+          </div>
         </div>
 
-        <div className="text-[12px] text-gray-500">{training.category}</div>
-
-        <div className="text-[13.5px] font-bold text-gray-900 leading-snug line-clamp-2 min-h-[40px]">
-          {training.title}
-        </div>
-
-        <div className="flex flex-wrap gap-1.5 mt-2 min-h-[28px]">
-          {training.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 text-[11px] text-gray-500"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-auto">
-          <div className="flex items-end justify-between mt-3">
-            <div>
-              <div className="text-[10.5px] text-gray-400">Harga</div>
-              <div className="text-lg font-extrabold text-gray-900">Gratis</div>
-            </div>
+        <div className="p-4 flex flex-col flex-1">
+          <div className="text-[11px] font-semibold text-blue-700">
+            {training.id}
           </div>
 
-          <button className="w-full py-2.5 mt-2 rounded-lg bg-primary hover:bg-lightprimary active:bg-lightprimary text-white text-sm font-bold transition-colors cursor-pointer">
+          <div className="text-[12px] text-gray-500">{training.category}</div>
+
+          <div className="text-[13.5px] font-bold text-gray-900 leading-snug line-clamp-2 min-h-[40px]">
+            {training.title}
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 mt-2 min-h-[28px]">
+            {training.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 text-[11px] text-gray-500"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-auto">
+            <div className="flex items-end justify-between mt-3">
+              <div>
+                <div className="text-[10.5px] text-gray-400">Harga</div>
+                <div className="text-lg font-extrabold text-gray-900">
+                  Gratis
+                </div>
+              </div>
+            </div>
+
+            {/* <button className="w-full py-2.5 mt-2 rounded-lg bg-primary hover:bg-lightprimary active:bg-lightprimary text-white text-sm font-bold transition-colors cursor-pointer">
             Lihat Pelatihan
-          </button>
+          </button> */}
+          </div>
         </div>
       </div>
-
-    </div>
+    </a>
   );
 }
 
@@ -360,11 +363,6 @@ export default function PelatihanPage() {
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
-        @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
-      `}</style>
-
       <div className="min-h-screen bg-gray-50">
         <Navbar />
 
@@ -448,7 +446,7 @@ export default function PelatihanPage() {
                 </span>{" "}
                 pelatihan ditemukan
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5 items-stretch">
                 {filtered.map((t) => (
                   <TrainingCard key={t.id} training={t} />
                 ))}

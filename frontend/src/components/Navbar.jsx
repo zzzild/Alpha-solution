@@ -267,7 +267,7 @@ export default function Navbar() {
             </a>
             <a
               href="/register"
-              className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-md shadow-blue-200 transition-colors"
+              className="px-4 py-2 bg-primary hover:bg-lightprimary text-white rounded-lg text-sm font-semibold shadow-md shadow-orange-200 transition-colors"
             >
               Daftar
             </a>
@@ -311,7 +311,7 @@ export default function Navbar() {
             <button className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:border-blue-400 transition-colors">
               Masuk
             </button>
-            <button className="flex-1 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold transition-colors">
+            <button className="flex-1 py-2.5 bg-primary hover:bg-lightprimary text-white rounded-lg text-sm font-semibold transition-colors">
               Daftar
             </button>
           </div>

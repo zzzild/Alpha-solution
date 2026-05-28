@@ -597,7 +597,7 @@ export default function RekomendasiPage() {
               <button
                 onClick={handleProses}
                 disabled={loading}
-                className="flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-800 disabled:opacity-70 text-white rounded-xl text-[14px] font-bold transition-colors shadow-md shadow-blue-200 whitespace-nowrap cursor-pointer"
+                className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-lightprimary disabled:opacity-70 text-white rounded-xl text-[14px] font-bold transition-colors shadow-md shadow-orange-200 whitespace-nowrap cursor-pointer"
               >
                 {loading ? (
                   <>

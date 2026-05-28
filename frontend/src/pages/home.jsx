@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Navbar from "./../components/Navbar";
-import Footer from "../components/Footer";
+import Footer from "./../components/Footer";
 
 /* ─────────────────────────── ICONS ─────────────────────────── */
 const ChevronRight = () => (
@@ -254,7 +254,7 @@ function TypingInput() {
           Ceritakan tujuan kariermu, kami carikan pelatihan yang tepat
         </p>
         <a
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-[13px] font-bold transition-colors shadow-lg shadow-blue-200"
+          className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-lightprimary text-white rounded-xl text-[13px] font-bold transition-colors shadow-lg shadow-orange-200"
           href="/rekomendasi"
         >
           <SendIcon /> Cari Sekarang
@@ -267,56 +267,58 @@ function TypingInput() {
 /* ─────────────────────────── CARDS ─────────────────────────── */
 function TrainingCard({ training }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col hover:border-blue-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-200 group">
-      <div className="relative overflow-hidden aspect-video">
-        <img
-          src={training.img}
-          alt={training.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 text-[11px] font-semibold text-gray-800">
-          {training.badge}
-        </div>
-      </div>
-
-      <div className="p-4 flex flex-col flex-1">
-        <div className="text-[11px] font-semibold text-blue-700">
-          {training.id}
+    <a href='/pelatihandetail' className="group">
+      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col hover:border-blue-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-200 group">
+        <div className="relative overflow-hidden aspect-video">
+          <img
+            src={training.img}
+            alt={training.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 text-[11px] font-semibold text-gray-800">
+            {training.badge}
+          </div>
         </div>
 
-        <div className="text-[12px] text-gray-500">{training.category}</div>
-
-        <div className="text-[13.5px] font-bold text-gray-900 leading-snug line-clamp-2 min-h-[40px]">
-          {training.title}
-        </div>
-
-        <div className="flex flex-wrap gap-1.5 mt-2 min-h-[28px]">
-          {training.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 text-[11px] text-gray-500"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-auto">
-          <div className="flex items-end justify-between mt-3">
-            <div>
-              <div className="text-[10.5px] text-gray-400">Harga</div>
-              <div className="text-lg font-extrabold text-gray-900">
-                Terjangkau
-              </div>
-            </div>
+        <div className="p-4 flex flex-col flex-1">
+          <div className="text-[11px] font-semibold text-blue-700">
+            {training.id}
           </div>
 
-          <button className="w-full py-2.5 mt-2 rounded-lg bg-primary hover:bg-lightprimary active:bg-lightprimary text-white text-sm font-bold transition-colors cursor-pointer">
-            Lihat Pelatihan
-          </button>
+          <div className="text-[12px] text-gray-500">{training.category}</div>
+
+          <div className="text-[13.5px] font-bold text-gray-900 leading-snug line-clamp-2 min-h-[40px]">
+            {training.title}
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 mt-2 min-h-[28px]">
+            {training.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 text-[11px] text-gray-500"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-auto">
+            <div className="flex items-end justify-between mt-3">
+              <div>
+                <div className="text-[10.5px] text-gray-400">Harga</div>
+                <div className="text-lg font-extrabold text-gray-900">
+                  Terjangkau
+                </div>
+              </div>
+            </div>
+
+            {/* <button className="w-full py-2.5 mt-2 rounded-lg bg-primary hover:bg-lightprimary active:bg-lightprimary text-white text-sm font-bold transition-colors cursor-pointer">
+              Lihat Pelatihan
+            </button> */}
+          </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -344,7 +346,7 @@ export default function HomePage() {
               <h1 className="fade-up-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold text-gray-900 leading-[1.12] tracking-tight mb-5">
                 Bangun Karier sebagai
                 <br />
-                <span className="text-blue-700">Talenta Vokasi</span> Unggulan
+                <span className="text-blue-700">Talenta Unggulan</span>
               </h1>
               <p className="fade-up-3 text-[15.5px] sm:text-[17px] text-gray-500 leading-relaxed mb-10 max-w-xl mx-auto">
                 Pelatihan bersertifikat, diselenggarakan oleh lembaga resmi.
@@ -430,9 +432,12 @@ export default function HomePage() {
                   Pelatihan Paling Populer
                 </h2>
               </div>
-              <button className="hidden sm:flex items-center gap-1.5 text-[13px] font-semibold text-blue-700 hover:underline">
+              <a
+                href="/pelatihan"
+                className="hidden sm:flex items-center gap-1.5 text-[13px] font-semibold text-blue-700 hover:underline"
+              >
                 Lihat semua <ChevronRight />
-              </button>
+              </a>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -467,9 +472,8 @@ export default function HomePage() {
                   Mempercayai Alpha Solusi?
                 </h2>
                 <p className="text-[14.5px] text-gray-500 leading-relaxed mb-8 max-w-md">
-                  Kami menghubungkan pencari kerja dengan lembaga pelatihan
-                  vokasi terbaik di seluruh Indonesia, didukung penuh oleh
-                  pemerintah.
+                  Kami menghubungkan pencari kerja dengan lembaga pelatihan di
+                  seluruh Indonesia, didukung penuh oleh pemerintah.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {FEATURES.map((f, i) => (
@@ -483,7 +487,7 @@ export default function HomePage() {
                 </div>
                 <a
                   href="/login"
-                  className="mt-8 w-fit flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-bold text-[14px] transition-colors shadow-lg shadow-blue-200"
+                  className="mt-8 w-fit flex items-center gap-2 px-6 py-3 bg-primary hover:bg-lightprimary text-white rounded-xl font-bold text-[14px] transition-colors shadow-lg shadow-orange-200"
                 >
                   Mulai Daftar Gratis <ArrowRight />
                 </a>
@@ -567,12 +571,6 @@ export default function HomePage() {
                 className="w-full sm:w-auto px-8 py-3.5 bg-white hover:bg-gray-50 text-blue-700 rounded-xl font-bold text-[15px] transition-colors shadow-xl"
               >
                 Jelajahi Pelatihan
-              </a>
-              <a
-                href="/daftar-lembaga"
-                className="w-full sm:w-auto px-8 py-3.5 border-2 border-white/40 hover:border-white text-white rounded-xl font-bold text-[15px] transition-colors"
-              >
-                Daftar Lembaga Mitra
               </a>
             </div>
           </div>
