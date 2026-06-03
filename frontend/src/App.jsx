@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Pelatihan from "./pages/Pelatihan";
-import PelatihanDetail from "./pages/PelatihanDetail";
-import Rekomendasi from "./pages/Rekomendasi";
 import AdminLayout from "./components/AdminComponents/AdminLayout";
 import Dashboard from "./pages/AdminPages/Dashboard";
 import PelatihanAdmin from "./pages/AdminPages/PelatihanAdmin";
+import OrderPaket from "./pages/OrderPaket";
+import Rekomendasi from "./pages/RekomendasiPage";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -17,8 +17,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pelatihan" element={<Pelatihan />} />
-        <Route path="/pelatihandetail" element={<PelatihanDetail />} />
         <Route path="/rekomendasi" element={<Rekomendasi />} />
+        <Route path="/pelatihandetail/:paketId" element={<OrderPaket />} />
 
         {/* Admin - nested route */}
         <Route path="/dashboard" element={<AdminLayout />}>

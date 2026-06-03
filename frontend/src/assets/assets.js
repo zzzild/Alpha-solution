@@ -62,3 +62,12 @@ export const CATEGORIES = [
     color: "bg-sky-50 text-sky-700 border-sky-100",
   },
 ];
+
+export const FEATURES = [
+  "Pelatihan diakui pemerintah & industri",
+  "Sertifikasi BNSP & internasional",
+  "Instruktur berpengalaman di bidangnya",
+  "Bantuan penempatan kerja pasca pelatihan",
+  "Tersedia beasiswa & subsidi penuh",
+  "180+ lembaga pelatihan terpercaya",
+];

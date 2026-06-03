@@ -1,6 +1,7 @@
 import React from 'react'
 import {AppContext} from '../context/AppContext'
 import { useContext } from 'react';
+import {Link} from 'react-router-dom';
 
 const PaketCard = () => {
     const {paket} = useContext(AppContext);
@@ -8,9 +9,9 @@ const PaketCard = () => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {paket?.map((item) => (
-        <a
+        <Link
           key={item.paketId}
-          href={`/pelatihandetail/${item.paketId}`}
+          to={`/pelatihandetail/${item.paketId}`}
           className="group"
         >
           <div className="bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col hover:border-blue-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-200 group">
@@ -70,7 +71,7 @@ const PaketCard = () => {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       ))}
     </section>
   )
