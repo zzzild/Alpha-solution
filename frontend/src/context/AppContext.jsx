@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 export const AppContext = createContext();
 
@@ -69,7 +70,8 @@ const AppContextProvider = ( props ) => {
 
     const fetchPaket = async () =>{
         try {
-            const {data} = await axios.get(`${backendUrl}/api/paket/`);
+            const {data} = await axios.get(`${backendUrl}/api/user/paket`);
+            console.log("Response API:", data);
 
             if(data.success) {
                 setPaket(data.paket);
@@ -109,6 +111,10 @@ const AppContextProvider = ( props ) => {
         loadProfileData,
         userData
     }
+
+    useEffect(() => {
+        fetchPaket();
+    }, []);
 
     return (
         <AppContext.Provider value={value}>
