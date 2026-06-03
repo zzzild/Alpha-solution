@@ -13,6 +13,7 @@ const AppContextProvider = (props) => {
   const [paket, setPaket] = useState([]);
   const [paketInfo, setPaketInfo] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [orderHistory, setOrderHistory] = useState([]);
 
   const registerUser = async (formData) => {
     try {
@@ -121,6 +122,70 @@ const AppContextProvider = (props) => {
     return data;
   };
 
+  const makeOrder = async (paketId) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/user/order-paket`,
+        { paketId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      return data;
+    } catch (error) {
+      console.log(error);
+
+      toast.error(error.response?.data?.message || "Gagal membuat pesanan");
+
+      return {
+        success: false,
+      };
+    }
+  };
+
+  const getUserOrderHistory = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/user/order-history`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (data.success) {
+        setOrderHistory(data.orders.reverse());
+      }
+      
+    } catch (error) {
+      console.error(error);
+      toast.error("Terjadi kesalahan pada saat mengambil riwayat pesanan!");
+    }
+  };
+
+  const submitPayment = async (orderId, paymentProof) => {
+    try {
+      const formData = new FormData();
+      formData.append("paymentProof", paymentProof);
+
+      await axios.post(
+        `${backendUrl}/api/user/upload-payment-proof/${orderId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      )
+      toast.success("Bukti pembayaran berhasil diunggah!");
+      return true;
+    } catch (error) {
+      toast.error("Gagal mengunggah bukti pembayaran!");
+      console.error(error);
+    }
+  }
+
   const value = {
     backendUrl,
     registerUser,
@@ -133,6 +198,9 @@ const AppContextProvider = (props) => {
     loadProfileData,
     userData,
     getRecommendation,
+    makeOrder,
+    getUserOrderHistory,
+    submitPayment, orderHistory
   };
 
   useEffect(() => {
