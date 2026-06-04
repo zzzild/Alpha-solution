@@ -751,6 +751,7 @@ function KurikulumItem({ item, index }) {
 }
 
 // Main Page
+<<<<<<< HEAD
 export default function DetailPelatihan() {
   const [activeTab, setActiveTab] = useState("overview");
   const [showModal, setShowModal] = useState(false);
@@ -1022,3 +1023,5 @@ export default function DetailPelatihan() {
     </>
   );
 }
+=======
+>>>>>>> 93be58e3a9c804a1bd76696ab986c6ef585ff7a7

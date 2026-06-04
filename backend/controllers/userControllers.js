@@ -257,3 +257,26 @@ export const orderHistory = async (req, res) => {
     });
   }
 }
+
+export const uploadPaymentProof = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    if (!req.file) {
+      return res.json({ success: false, message: "Bukti pembayaran tidak ditemukan" });
+    }
+
+    const upload = await cloudinary.uploader.upload(req.file.path, {
+      folder: "payment_proofs",
+    });
+
+    await pemesananModel.findOneAndUpdate(
+      { pemesananId: orderId },
+      { paymentProof: upload.secure_url, paymentStatus: "paid" },
+    );
+    res.json({ success: true, message: "Bukti pembayaran berhasil diunggah" });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Failed to upload payment proof" });
+  }
+};

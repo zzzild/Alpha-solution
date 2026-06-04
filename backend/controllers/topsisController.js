@@ -1,3 +1,6 @@
+import paketModel from "../models/paketModel.js";
+import kriteriaModel from "../models/kriteriaModel.js";
+
 export const getRecommendation = async (req, res) => {
   try {
     const {

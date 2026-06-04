@@ -7,7 +7,6 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [alerts, setAlerts] = useState([]);
 
-  // Kunci scroll body saat sidebar mobile terbuka
   useEffect(() => {
     document.body.style.overflow = sidebarOpen ? "hidden" : "";
     return () => {
@@ -23,7 +22,6 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* ── Overlay mobile ── */}
       <div
         onClick={() => setSidebarOpen(false)}
         className={`fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm transition-all duration-300 md:hidden ${
@@ -33,14 +31,10 @@ const AdminLayout = () => {
         }`}
       />
 
-      {/* ── Sidebar ── */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* ── Konten utama ── */}
       <div className="md:ml-64 flex flex-col min-h-screen transition-all duration-300">
-        {/* ── Topbar ── */}
         <header className="sticky top-0 z-30 h-16 flex items-center gap-4 px-4 md:px-6 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
-          {/* Tombol hamburger hanya mobile */}
           <button
             onClick={() => setSidebarOpen(true)}
             className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-600 transition-all duration-150"
@@ -61,12 +55,10 @@ const AdminLayout = () => {
             </svg>
           </button>
 
-          {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm">
             <span className="text-blue-600 font-semibold">Dasbor Admin</span>
           </nav>
 
-          {/* Kanan topbar */}
           <div className="ml-auto flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-2 bg-slate-100 rounded-xl px-3 py-1.5">
               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0">
@@ -77,9 +69,7 @@ const AdminLayout = () => {
           </div>
         </header>
 
-        {/* ── Konten halaman ── */}
         <main className="flex-1 p-4 md:p-6 space-y-4">
-          {/* Alert stack */}
           <div className="space-y-2">
             {alerts.map((alert) => (
               <AlertBanner
@@ -99,7 +89,6 @@ const AdminLayout = () => {
   );
 };
 
-/* ── Komponen Alert ── */
 const ALERT_VARIANTS = {
   message: {
     wrapper:
