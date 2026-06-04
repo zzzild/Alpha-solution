@@ -849,7 +849,7 @@ export default function DetailPelatihan() {
 
               {/* Tabs */}
               <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-4">
-                <div className="flex border-b border-gray-100 overflow-x-auto">
+                <div className="flex border-b border-gray-100">
                   {TABS.map((tab) => (
                     <button
                       key={tab.id}

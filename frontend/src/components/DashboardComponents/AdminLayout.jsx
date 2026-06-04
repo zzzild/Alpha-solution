@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../../components/AdminComponents/Sidebar";
-import Footer from "../../components/AdminComponents/Footer";
+import Sidebar from "./Sidebar";
+import Footer from "./Footer";
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
