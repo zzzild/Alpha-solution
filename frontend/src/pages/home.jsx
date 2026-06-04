@@ -125,7 +125,7 @@ function TypingInput() {
           className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-lightprimary text-white rounded-xl text-[13px] font-bold transition-colors shadow-lg shadow-orange-200"
           href="/rekomendasi"
         >
-          <SendIcon /> Cari Sekarang
+          <SendIcon /> Dapatkan Rekomendasi
         </a>
       </div>
     </div>

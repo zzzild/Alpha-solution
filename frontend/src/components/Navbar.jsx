@@ -112,7 +112,6 @@ const NAV_ITEMS = [
 function Logo() {
   return (
     <div className="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
-      {/* logo */}
       <a
         href="/"
         className="text-[17px] font-extrabold tracking-tight leading-none text-orange-700"
@@ -123,6 +122,7 @@ function Logo() {
   );
 }
 
+// Desktop Navigation Item with Dropdown
 function NavDropdown({ item }) {
   const [open, setOpen] = useState(false);
   return (
@@ -161,7 +161,7 @@ function NavDropdown({ item }) {
   );
 }
 
-// Mobile Nav Item dengan sub-menu accordion
+// Mobile Navigation Item
 function MobileNavItem({ item }) {
   const [open, setOpen] = useState(false);
 
@@ -181,7 +181,6 @@ function MobileNavItem({ item }) {
         )}
       </button>
 
-      {/* Sub-menu accordion */}
       {item.hasDropdown && open && (
         <div className="bg-gray-50 pb-1">
           {item.items.map((sub) => (
@@ -198,7 +197,7 @@ function MobileNavItem({ item }) {
   );
 }
 
-// Navbar
+// Main Component
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -212,10 +211,8 @@ export default function Navbar() {
         @keyframes slideIn { from { transform:translateX(-100%); } to { transform:translateX(0); } }
       `}</style>
 
-      {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-[60px] flex items-center gap-3">
-          {/* Hamburger — mobile only */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden text-gray-700 p-1 hover:text-blue-700 transition-colors flex-shrink-0"
@@ -224,15 +221,12 @@ export default function Navbar() {
           </button>
 
           <Logo />
-
-          {/* Desktop nav links */}
           <div className="hidden lg:flex items-center gap-0.5 flex-1">
             {NAV_ITEMS.map((item, i) => (
               <NavDropdown key={i} item={item} />
             ))}
           </div>
 
-          {/* Desktop search */}
           <div
             className={`hidden lg:flex items-center flex-[0_1_440px] bg-gray-100 rounded-lg px-3 gap-2 transition-all duration-200 ${searchFocused ? "ring-2 ring-blue-500 bg-white" : ""}`}
           >
@@ -249,7 +243,6 @@ export default function Navbar() {
             <button className="text-gray-400 hover:text-gray-600"></button>
           </div>
 
-          {/* Mobile search icon */}
           <button
             onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
             className="lg:hidden text-gray-600 p-1 ml-auto flex-shrink-0"
@@ -257,7 +250,6 @@ export default function Navbar() {
             <SearchIcon />
           </button>
 
-          {/* Desktop auth buttons */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
             <a
               href="/login"
@@ -274,7 +266,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile search bar */}
         {mobileSearchOpen && (
           <div className="lg:hidden px-4 pb-3">
             <div className="flex items-center bg-white rounded-lg px-3 gap-2 ring-2 ring-blue-500">
@@ -299,7 +290,6 @@ export default function Navbar() {
         />
       )}
 
-      {/* Mobile Menu Drawer */}
       <div
         className={`fixed top-[60px] left-0 bottom-0 w-[300px] max-w-[85vw] bg-white z-50 overflow-y-auto shadow-2xl transition-transform duration-250 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         style={{ animation: mobileMenuOpen ? "slideIn 0.22s ease" : "none" }}
