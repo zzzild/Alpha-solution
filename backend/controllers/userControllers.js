@@ -6,6 +6,7 @@ import pemesananModel from "../models/pemesananModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { v2 as cloudinary } from "cloudinary";
 
 export const registerUser = async (req, res) => {
   try {
@@ -129,34 +130,58 @@ export const loginUser = async (req, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userId = req.userId;
-    const userData = await userModel.findOne({ userId }).select("-password");
 
-    res.json({ success: true, userData });
+    const userData = await userModel
+      .findOne({userId})
+      .select("-password");
+
+    res.json({
+      success: true,
+      userData,
+    });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: "Failed to retrieve user profile" });
+
+    res.json({
+      success: false,
+      message: "Failed to retrieve user profile",
+    });
   }
 };
 
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.userId;
-    const { name, address, phone } = req.body;
 
-    if (!name || !address || !phone) {
-      return res.json({ success: false, message: "All fields are required" });
-    }
+    const {
+      nameUser,
+      address,
+      phone,
+    } = req.body;
 
-    if (!/^[a-zA-Z\s]{3,50}$/.test(name)) {
-      return res.json({ success: false, message: "Enter a valid full name" });
-    }
+    const updatedUser =
+      await userModel.findOneAndUpdate(
+        { userId },
+        {
+          nameUser,
+          address,
+          phone,
+        },
+        { new: true }
+      ).select("-password");
 
-    await userModel.findOneAndUpdate({ userId }, { name, address, phone });
-
-    res.json({ success: true, message: "Profile updated successfully" });
+    res.json({
+      success: true,
+      userData: updatedUser,
+    });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: "Failed to update profile" });
+
+    res.json({
+      success: false,
+      message:
+        "Failed to update profile",
+    });
   }
 };
 
@@ -219,6 +244,21 @@ export const orderPaket = async (req, res) => {
       return res.json({ success: false, message: "User not found" });
     }
 
+    const existingOrder =
+  await pemesananModel.findOne({
+    userId,
+    paketId,
+    paymentStatus: "pending",
+  });
+
+if (existingOrder) {
+  return res.json({
+    success: false,
+    message:
+      "Masih ada pesanan yang belum dibayar",
+  });
+}
+
     const orderData = {
       userId,
       paketId,
@@ -231,8 +271,9 @@ export const orderPaket = async (req, res) => {
     await newOrder.save();
     return res.json({
       success: true,
-      message: "Order paket berhasil dibuat!",
-      data: orderData 
+  message: "Order paket berhasil dibuat!",
+  orderId: newOrder.pemesananId,
+  data: newOrder, 
     });
 
   } catch (error) {
@@ -247,36 +288,108 @@ export const orderPaket = async (req, res) => {
 export const orderHistory = async (req, res) => {
   try {
     const userId = req.userId;
-    const orders = await pemesananModel.find({ userId }).select("-password");
-    res.json({ success: true, orders });
+
+    await pemesananModel.updateMany(
+      {
+        paymentStatus: "pending",
+        createdAt: {
+          $lt: new Date(
+            Date.now() - 24 * 60 * 60 * 1000
+          ),
+        },
+      },
+      {
+        paymentStatus: "expired",
+      }
+    );
+
+    const orders = await pemesananModel.find({
+      userId,
+    });
+
+    return res.json({
+      success: true,
+      orders,
+    });
   } catch (error) {
     console.error(error);
+
     return res.json({
       success: false,
       message: "Failed to retrieve order history",
     });
   }
-}
+};
 
 export const uploadPaymentProof = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    if (!req.file) {
-      return res.json({ success: false, message: "Bukti pembayaran tidak ditemukan" });
+    const order =
+      await pemesananModel.findOne({
+        pemesananId: orderId,
+      });
+
+    if (!order) {
+      return res.json({
+        success: false,
+        message: "Pesanan tidak ditemukan",
+      });
     }
 
-    const upload = await cloudinary.uploader.upload(req.file.path, {
-      folder: "payment_proofs",
-    });
+    if (
+      order.paymentStatus ===
+      "expired"
+    ) {
+      return res.json({
+        success: false,
+        message:
+          "Pesanan sudah kadaluarsa",
+      });
+    }
+
+    if (!req.file) {
+      return res.json({
+        success: false,
+        message:
+          "Bukti pembayaran tidak ditemukan",
+      });
+    }
+
+    const upload =
+      await cloudinary.uploader.upload(
+        req.file.path,
+        {
+          folder:
+            "payment_proofs",
+        }
+      );
 
     await pemesananModel.findOneAndUpdate(
-      { pemesananId: orderId },
-      { paymentProof: upload.secure_url, paymentStatus: "paid" },
+      {
+        pemesananId: orderId,
+      },
+      {
+        paymentProof:
+          upload.secure_url,
+
+        paymentStatus:
+          "completed",
+      }
     );
-    res.json({ success: true, message: "Bukti pembayaran berhasil diunggah" });
+
+    res.json({
+      success: true,
+      message:
+        "Bukti pembayaran berhasil diunggah",
+    });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: "Failed to upload payment proof" });
+
+    res.json({
+      success: false,
+      message:
+        "Failed to upload payment proof",
+    });
   }
 };

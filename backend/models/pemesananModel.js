@@ -21,10 +21,19 @@ const pemesananSchema = new mongoose.Schema({
   userData: {type: Object, required: true},
   paketData: {type: Object, required: true},
   paymentStatus: {
-    type: String,
-    default: "pending",
+      type: String,
+      enum: [
+        "pending",
+        "completed",
+        "expired",
+      ],
+      default: "pending",
+    },
   },
-})
+  {
+    timestamps: true,
+  },
+)
 
 const pemesananModel =
   mongoose.models.pemesanan ||

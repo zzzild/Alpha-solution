@@ -10,6 +10,7 @@ const AppContextProvider = (props) => {
   const [token, setToken] = useState(
     localStorage.getItem("token") ? localStorage.getItem("token") : false,
   );
+
   const [paket, setPaket] = useState([]);
   const [paketInfo, setPaketInfo] = useState(null);
   const [userData, setUserData] = useState(null);
@@ -25,13 +26,21 @@ const AppContextProvider = (props) => {
       if (data.success) {
         localStorage.setItem("token", data.token);
         setToken(data.token);
+
         toast.success("Pendaftaran berhasil!");
-      } else {
-        toast.error("Pendaftaran gagal!");
+
+        return true;
       }
+
+      toast.error(data.message || "Pendaftaran gagal!");
+
+      return false;
     } catch (error) {
       console.error(error);
+
       toast.error("Terjadi kesalahan pada saat registrasi!");
+
+      return false;
     }
   };
 
@@ -44,52 +53,66 @@ const AppContextProvider = (props) => {
 
       if (data.success) {
         localStorage.setItem("token", data.token);
+
         setToken(data.token);
+
         toast.success("Login berhasil!");
-      } else {
-        toast.error("Login gagal!");
+
+        return true;
       }
+
+      toast.error(data.message || "Login gagal!");
+
+      return false;
     } catch (error) {
       console.error(error);
+
       toast.error("Terjadi kesalahan pada saat login!");
+
+      return false;
     }
   };
 
   const loadProfileData = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/user/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get(`${backendUrl}/api/user/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if (data.success) {
-        setUserData(data.user);
-      } else {
-        toast.error("Gagal mengambil data profil!");
+
+      if (response.data.success) {
+        setUserData(response.data.userData);
       }
     } catch (error) {
       console.error(error);
-      if (
-        error.response &&
-        error.response.status === 401 &&
-        error.response.data.message === "Unauthorized"
-      ) {
-        localStorage.removeItem("token");
-        setToken(false);
-        toast.error("Sesi Anda telah habis. Silakan login kembali.");
-      } else {
-        toast.error("Terjadi kesalahan pada saat mengambil data profil!");
+    }
+  };
+
+  const updateProfile = async (formData) => {
+    try {
+      const { data } = await axios.put(backendUrl + "/api/user/update-profile", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (data.success) {
+        setUserData(data.userData);
+        toast.success("Profil berhasil diperbarui!");
+        await loadProfileData();
       }
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal memperbarui profil!");
     }
   };
 
   const fetchPaket = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/user/paket`);
-      console.log("Response API:", data);
 
       if (data.success) {
         setPaket(data.paket);
-      } else {
-        toast.error("Gagal mengambil data paket!");
       }
     } catch (error) {
       console.error(error);
@@ -104,8 +127,6 @@ const AppContextProvider = (props) => {
       );
       if (data.success) {
         setPaketInfo(data.paket);
-      } else {
-        toast.error("Gagal mengambil data paket!");
       }
     } catch (error) {
       console.error(error);
@@ -157,7 +178,6 @@ const AppContextProvider = (props) => {
       if (data.success) {
         setOrderHistory(data.orders.reverse());
       }
-      
     } catch (error) {
       console.error(error);
       toast.error("Terjadi kesalahan pada saat mengambil riwayat pesanan!");
@@ -165,48 +185,76 @@ const AppContextProvider = (props) => {
   };
 
   const submitPayment = async (orderId, paymentProof) => {
-    try {
-      const formData = new FormData();
-      formData.append("paymentProof", paymentProof);
+  try {
+    const formData = new FormData();
 
+    formData.append(
+      "paymentProof",
+      paymentProof
+    );
+
+    const { data } =
       await axios.post(
         `${backendUrl}/api/user/upload-payment-proof/${orderId}`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
         }
-      )
-      toast.success("Bukti pembayaran berhasil diunggah!");
+      );
+
+    if (data.success) {
+      toast.success(data.message);
+
+      await getUserOrderHistory();
+
       return true;
-    } catch (error) {
-      toast.error("Gagal mengunggah bukti pembayaran!");
-      console.error(error);
     }
+
+    return false;
+  } catch (error) {
+    console.error(error);
+
+    toast.error(
+      "Gagal mengunggah bukti pembayaran!"
+    );
+
+    return false;
   }
+};
 
   const value = {
     backendUrl,
     registerUser,
     loginUser,
     token,
+    setToken,
+    userData,
+    setUserData,
     paket,
     fetchPaket,
     fetchPaketInfo,
     paketInfo,
     loadProfileData,
-    userData,
     getRecommendation,
     makeOrder,
     getUserOrderHistory,
-    submitPayment, orderHistory
+    submitPayment,
+    orderHistory,
+    updateProfile,
   };
 
   useEffect(() => {
-    (fetchPaket(), fetchPaketInfo(), loadProfileData());
+    fetchPaket();
+    fetchPaketInfo();
   }, []);
 
+  useEffect(() => {
+    if (token) {
+      loadProfileData();
+    }
+  }, [token]);
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
   );

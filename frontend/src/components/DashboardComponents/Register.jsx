@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
 
 const EyeIcon = ({ open }) => (
   <svg
@@ -123,6 +125,8 @@ const inputCls = (err) =>
   }`;
 
 export default function RegisterPage() {
+  const {token, registerUser} = useContext(AppContext);
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -153,14 +157,27 @@ export default function RegisterPage() {
     return e;
   };
 
-  const handleSubmit = () => {
-    const e = validate();
-    if (Object.keys(e).length) {
-      setErrors(e);
-      return;
-    }
+  const onSubmitHandler = async (e) => {
+  e.preventDefault();
+
+  const validationErrors = validate();
+
+  if (
+    Object.keys(validationErrors).length > 0
+  ) {
+    setErrors(validationErrors);
+    return;
+  }
+
+  const success =
+    await registerUser(form);
+
+  if (success) {
     setSubmitted(true);
-  };
+    navigate("/");
+  }
+
+};
 
   const pwStrength =
     form.password.length === 0
@@ -235,7 +252,7 @@ export default function RegisterPage() {
               </p>
             </div>
 
-            <div className="fade-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-7 flex flex-col gap-4">
+            <form onSubmit={onSubmitHandler} className="fade-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-7 flex flex-col gap-4">
               <Field
                 icon={<UserIcon />}
                 label="Nama Lengkap"
@@ -363,12 +380,12 @@ export default function RegisterPage() {
               </div>
 
               <button
-                onClick={handleSubmit}
+                type="submit"
                 className="w-full py-3.5 mt-1 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white rounded-xl text-[14.5px] font-extrabold transition-colors shadow-lg shadow-blue-200 cursor-pointer"
               >
                 Daftar Sekarang
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>

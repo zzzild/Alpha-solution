@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 // Icons
 const SearchIcon = () => (
@@ -199,6 +201,9 @@ function MobileNavItem({ item }) {
 
 // Main Component
 export default function Navbar() {
+  const { token, userData } = useContext(AppContext);
+  
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -250,19 +255,30 @@ export default function Navbar() {
             <SearchIcon />
           </button>
 
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-            <a
-              href="/login"
-              className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:border-blue-400 transition-colors"
-            >
-              Masuk
-            </a>
-            <a
-              href="/register"
-              className="px-4 py-2 bg-primary hover:bg-lightprimary text-white rounded-lg text-sm font-semibold shadow-md shadow-orange-200 transition-colors"
-            >
-              Daftar
-            </a>
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+            {!token ? (
+              <>
+                <NavLink
+                  to="/login"
+                  className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:border-blue-400 transition-colors"
+                >
+                  Masuk
+                </NavLink>
+
+                <NavLink
+                  to="/register"
+                  className="px-4 py-2 bg-primary hover:bg-lightprimary text-white rounded-lg text-sm font-semibold shadow-md shadow-orange-200 transition-colors"
+                >
+                  Daftar
+                </NavLink>
+              </>
+            ) : (
+              <NavLink to="/profile">
+                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm cursor-pointer hover:scale-105 transition">
+                  {userData?.nameUser?.[0]?.toUpperCase() || "U"}
+                </div>
+              </NavLink>
+            )}
           </div>
         </div>
 

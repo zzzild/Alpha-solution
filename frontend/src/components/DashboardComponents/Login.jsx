@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
+import { AppContext } from "../../context/AppContext";
 
 /* ─── ICONS ─── */
 const EyeIcon = ({ open }) => (
@@ -57,6 +59,9 @@ const LockIcon = () => (
 );
 
 export default function LoginPage() {
+  const { token,  loginUser } = useContext(AppContext);
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -64,30 +69,32 @@ export default function LoginPage() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const onSubmitHandler = async (e) => {
+  e.preventDefault();
+
+  setLoading(true);
+
+  const success =
+  await loginUser(
+    email,
+    password
+  );
+
+  setLoading(false);
+
+  if (success) {
+    navigate("/");
+  }
+};
+  
+ 
+
   const inputCls = (err) =>
     `w-full pl-10 pr-4 py-3 rounded-xl border text-[13.5px] text-gray-800 outline-none transition-all duration-200 bg-gray-50 placeholder-gray-300 ${
       err
         ? "border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100"
         : "border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:bg-white"
     }`;
-
-  const validate = () => {
-    const e = {};
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      e.email = "Format email tidak valid";
-    if (password.length < 6) e.password = "Password minimal 6 karakter";
-    return e;
-  };
-
-  const handleSubmit = () => {
-    const e = validate();
-    if (Object.keys(e).length) {
-      setErrors(e);
-      return;
-    }
-    setLoading(true);
-    setTimeout(() => setLoading(false), 1500); // simulate
-  };
 
   return (
     <>
@@ -162,7 +169,7 @@ export default function LoginPage() {
                       setErrors((er) => ({ ...er, password: undefined }));
                     }}
                     className={`${inputCls(errors.password)} pr-10`}
-                    onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                    onKeyDown={(e) => e.key === "Enter" && onSubmitHandler()}
                   />
                   <button
                     type="button"
@@ -211,7 +218,7 @@ export default function LoginPage() {
               </label>
 
               <button
-                onClick={handleSubmit}
+                onClick={onSubmitHandler}
                 disabled={loading}
                 className="w-full py-3.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 disabled:opacity-70 text-white rounded-xl text-[14.5px] font-extrabold transition-colors shadow-lg shadow-blue-200 flex items-center justify-center gap-2 cursor-pointer"
               >
