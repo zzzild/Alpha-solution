@@ -1,12 +1,10 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import Navbar from "./../components/Navbar";
+import Footer from "./../components/Footer";
 
 export default function ProfilePage() {
-  const {
-    userData,
-    setToken,
-    updateProfile,
-  } = useContext(AppContext);
+  const { userData, setToken, updateProfile } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,122 +35,104 @@ export default function ProfilePage() {
     setIsEditing(false);
   };
 
-  const firstLetter =
-    userData?.nameUser?.charAt(0)?.toUpperCase() || "U";
+  const firstLetter = userData?.nameUser?.charAt(0)?.toUpperCase() || "U";
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="h-36 bg-gradient-to-r from-blue-600 to-blue-500" />
-
-          <div className="px-8 pb-8">
-            <div className="-mt-14 flex flex-col md:flex-row md:items-end gap-5">
-
-              <div className="w-28 h-28 rounded-full bg-white p-1 shadow-lg">
-                <div className="w-full h-full rounded-full bg-blue-600 flex items-center justify-center text-white text-4xl font-bold">
-                  {firstLetter}
-                </div>
-              </div>
-
-              <div className="flex-1">
-                <h1 className="text-2xl font-bold text-gray-900">
-                  {userData?.nameUser || "User"}
-                </h1>
-
-                <p className="text-gray-500">
-                  {userData?.email}
-                </p>
-              </div>
-
-              <button
-                onClick={logout}
-                className="px-5 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold"
-              >
-                Logout
-              </button>
-
-            </div>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-5 mt-6">
-
-          <div className="bg-white rounded-2xl border border-gray-100 p-6">
-            <h2 className="font-bold text-lg mb-5">
-              Informasi Pribadi
-            </h2>
-
-            <div className="space-y-4">
-              <ProfileItem
-                label="Nama Lengkap"
-                value={userData?.nameUser}
-              />
-
-              <ProfileItem
-                label="Email"
-                value={userData?.email}
-              />
-
-              <ProfileItem
-                label="Nomor HP"
-                value={userData?.phone}
-              />
-
-              <ProfileItem
-                label="Jenis Kelamin"
-                value={userData?.gender}
-              />
-            </div>
+      <div className="py-16 sm:py-20 min-h-screen">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 space-y-4">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold ">
+              Profil <span className="text-secondary">Saya</span>
+            </h1>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 p-6">
-            <h2 className="font-bold text-lg mb-5">
-              Alamat
-            </h2>
-
-            <div className="bg-gray-50 rounded-xl p-4 text-gray-700">
-              {userData?.address || "Belum ada alamat"}
+          <div className="bg-white rounded-2xl border border-blue-100 p-6 flex flex-wrap items-center gap-5">
+            <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
+              {firstLetter}
             </div>
-
+            <div className="flex-1 min-w-0">
+              <p className="text-xl font-bold text-gray-900 truncate">
+                {userData?.nameUser || "User"}
+              </p>
+              <p className="text-sm text-gray-400 truncate">
+                {userData?.email}
+              </p>
+            </div>
             <button
-              onClick={openEditModal}
-              className="mt-5 w-full py-3 rounded-xl border border-blue-600 text-blue-600 font-semibold hover:bg-blue-50"
+              onClick={logout}
+              className="border border-red-500 text-red-500 hover:bg-red-50 rounded-xl px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
             >
-              Edit Profil
+              Logout
             </button>
           </div>
 
-        </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-white rounded-2xl border border-blue-100 p-5">
+              <p className="text-base font-bold text-gray-900 mb-4">
+                Informasi Pribadi
+              </p>
+              <div className="space-y-3">
+                <ProfileItem label="Nama Lengkap" value={userData?.nameUser} />
+                <div className="h-px bg-blue-50" />
+                <ProfileItem label="Email" value={userData?.email} />
+                <div className="h-px bg-blue-50" />
+                <ProfileItem label="Nomor HP" value={userData?.phone} />
+                <div className="h-px bg-blue-50" />
+                <ProfileItem label="Jenis Kelamin" value={userData?.gender} />
+              </div>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
-          <StatCard title="Pelatihan Diikuti" value="0" />
-          <StatCard title="Sertifikat" value="0" />
-          <StatCard title="Pelatihan Selesai" value="0" />
-        </div>
+            <div className="bg-white rounded-2xl border border-blue-100 p-5 flex flex-col">
+              <p className="text-base font-bold text-gray-900 mb-4">Alamat</p>
+              <div
+                className="flex-1 rounded-xl p-4 text-sm text-gray-400"
+                style={{ background: "#EEF2F8" }}
+              >
+                {userData?.address || "Belum ada alamat"}
+              </div>
+              <button
+                onClick={openEditModal}
+                className="mt-4 w-full py-2.5 rounded-xl border-2 border-blue-600 text-blue-600 text-sm font-medium hover:bg-blue-50 transition-colors cursor-pointer"
+              >
+                Edit Profil
+              </button>
+            </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <StatCard
+              title="Pelatihan Diikuti"
+              value="0"
+              color="text-gray-900"
+            />
+            <StatCard title="Sertifikat" value="0" color="text-blue-600" />
+            <StatCard
+              title="Pelatihan Selesai"
+              value="0"
+              color="text-red-500"
+            />
+          </div>
+        </div>
       </div>
 
       {isEditing && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-
-            <h2 className="text-xl font-bold mb-5">
-              Edit Profil
-            </h2>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md border border-blue-100">
+            <div className="flex items-center gap-2 mb-5">
+              <h2 className="text-lg font-bold text-gray-900">Edit Profil</h2>
+            </div>
 
             <input
               type="text"
               placeholder="Nama"
               value={formData.name}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  name: e.target.value,
-                })
+                setFormData({ ...formData, name: e.target.value })
               }
-              className="w-full border rounded-lg p-3 mb-3"
+              className="w-full border border-blue-100 rounded-xl p-3 mb-3 text-sm focus:outline-none focus:border-blue-400 transition-colors"
             />
 
             <input
@@ -160,46 +140,40 @@ export default function ProfilePage() {
               placeholder="Nomor HP"
               value={formData.phone}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  phone: e.target.value,
-                })
+                setFormData({ ...formData, phone: e.target.value })
               }
-              className="w-full border rounded-lg p-3 mb-3"
+              className="w-full border border-blue-100 rounded-xl p-3 mb-3 text-sm focus:outline-none focus:border-blue-400 transition-colors"
             />
 
             <textarea
               placeholder="Alamat"
               value={formData.address}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  address: e.target.value,
-                })
+                setFormData({ ...formData, address: e.target.value })
               }
-              className="w-full border rounded-lg p-3 mb-4"
+              className="w-full border border-blue-100 rounded-xl p-3 mb-4 text-sm focus:outline-none focus:border-blue-400 transition-colors"
               rows={4}
             />
 
             <div className="flex gap-3">
               <button
                 onClick={() => setIsEditing(false)}
-                className="flex-1 border rounded-lg py-3"
+                className="flex-1 border border-blue-100 text-gray-500 rounded-xl py-2.5 text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 Batal
               </button>
-
               <button
                 onClick={handleSave}
-                className="flex-1 bg-blue-600 text-white rounded-lg py-3"
+                className="flex-1 rounded-xl py-2.5 text-sm font-medium text-white transition-colors cursor-pointer bg-primary"
               >
                 Simpan
               </button>
             </div>
-
           </div>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 }
@@ -207,13 +181,9 @@ export default function ProfilePage() {
 function ProfileItem({ label, value }) {
   return (
     <div>
-      <p className="text-xs uppercase text-gray-400 font-semibold">
-        {label}
-      </p>
+      <p className="text-xs uppercase text-gray-400 font-semibold">{label}</p>
 
-      <p className="text-gray-800 font-medium mt-1">
-        {value || "-"}
-      </p>
+      <p className="text-gray-800 font-medium mt-1">{value || "-"}</p>
     </div>
   );
 }
@@ -221,13 +191,9 @@ function ProfileItem({ label, value }) {
 function StatCard({ title, value }) {
   return (
     <div className="bg-white border border-gray-100 rounded-2xl p-6 text-center">
-      <h3 className="text-gray-500 text-sm">
-        {title}
-      </h3>
+      <h3 className="text-gray-500 text-sm">{title}</h3>
 
-      <p className="text-3xl font-bold text-blue-600 mt-2">
-        {value}
-      </p>
+      <p className="text-3xl font-bold text-blue-600 mt-2">{value}</p>
     </div>
   );
 }
