@@ -3,20 +3,6 @@ import { NavLink } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
 // Icons
-const SearchIcon = () => (
-  <svg
-    className="w-4 h-4"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="11" cy="11" r="8" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-  </svg>
-);
 const MenuIcon = () => (
   <svg
     className="w-5 h-5"
@@ -59,55 +45,12 @@ const ChevronDown = ({ cls = "w-3.5 h-3.5" }) => (
     <polyline points="6 9 12 15 18 9" />
   </svg>
 );
-const ChevronRight = () => (
-  <svg
-    className="w-4 h-4"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="9 18 15 12 9 6" />
-  </svg>
-);
 
 // Dummy Data
 const NAV_ITEMS = [
-  {
-    label: "Kejuruan",
-    hasDropdown: true,
-    items: [
-      "Teknologi Informasi",
-      "Konstruksi",
-      "Pertanian",
-      "Kesehatan",
-      "Pariwisata",
-    ],
-  },
-  {
-    label: "Pelatihan",
-    hasDropdown: true,
-    items: [
-      "Pelatihan Online",
-      "Pelatihan Tatap Muka",
-      "Pelatihan Mandiri",
-      "Sertifikasi",
-    ],
-  },
-  { label: "Magang" },
-  { label: "Akreditasi" },
-  {
-    label: "Mitra",
-    hasDropdown: true,
-    items: ["Mitra Pelatihan", "Mitra Industri", "Mitra Pemerintah"],
-  },
-  {
-    label: "Panduan",
-    hasDropdown: true,
-    items: ["Panduan Peserta", "Panduan Penyelenggara"],
-  },
+  { label: "Beranda", href: "/" },
+  { label: "Rekomendasi", href: "/rekomendasi" },
+  { label: "Pemesanan", href: "/pemesanan" },
 ];
 
 // Sub-Components
@@ -133,18 +76,25 @@ function NavDropdown({ item }) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <button
-        className={`flex items-center gap-1 px-2 py-1.5 text-sm font-medium rounded-md transition-colors ${open ? "text-blue-700" : "text-gray-700 hover:text-blue-700"}`}
+      <NavLink
+        to={item.href}
+        className={({ isActive }) =>
+          `flex items-center gap-1 px-2 py-1.5 text-sm font-medium rounded-md transition-colors ${
+            isActive ? "text-blue-700" : "text-gray-700 hover:text-blue-700"
+          }`
+        }
       >
         {item.label}
         {item.hasDropdown && (
           <span
-            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+            className={`transition-transform duration-200 ${
+              open ? "rotate-180" : ""
+            }`}
           >
             <ChevronDown />
           </span>
         )}
-      </button>
+      </NavLink>
       {item.hasDropdown && open && (
         <div className="absolute top-full left-0 pt-2 w-52 z-50">
           <div className="bg-white rounded-xl shadow-xl border border-blue-50 py-1.5 animate-[fadeIn_0.15s_ease]">
@@ -165,23 +115,14 @@ function NavDropdown({ item }) {
 
 // Mobile Navigation Item
 function MobileNavItem({ item }) {
-  const [open, setOpen] = useState(false);
-
   return (
     <div className="border-b border-gray-100">
-      <button
-        className="w-full flex items-center justify-between px-5 py-4 text-[15px] font-medium text-gray-800 text-left"
-        onClick={() => item.hasDropdown && setOpen(!open)}
+      <NavLink
+        to={item.href}
+        className="block px-5 py-4 text-[15px] font-medium text-gray-800 border-b border-gray-100"
       >
         {item.label}
-        {item.hasDropdown && (
-          <span
-            className={`text-gray-400 transition-transform duration-200 ${open ? "rotate-90" : ""}`}
-          >
-            <ChevronRight />
-          </span>
-        )}
-      </button>
+      </NavLink>
 
       {item.hasDropdown && open && (
         <div className="bg-gray-50 pb-1">
@@ -204,8 +145,6 @@ export default function Navbar() {
   const { token, userData } = useContext(AppContext);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(false);
 
   return (
     <>
@@ -224,29 +163,6 @@ export default function Navbar() {
               <NavDropdown key={i} item={item} />
             ))}
           </div>
-
-          <div
-            className={`hidden lg:flex items-center flex-[0_1_440px] bg-gray-100 rounded-lg px-3 gap-2 transition-all duration-200 ${searchFocused ? "ring-2 ring-blue-500 bg-white" : ""}`}
-          >
-            <span className="text-gray-400">
-              <SearchIcon />
-            </span>
-            <input
-              type="text"
-              placeholder="Cari pelatihan, lokasi pelatihan, mitra, dll"
-              className="flex-1 bg-transparent border-none outline-none text-sm text-gray-700 py-2.5 placeholder:text-gray-400"
-              onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}
-            />
-            <button className="text-gray-400 hover:text-gray-600"></button>
-          </div>
-
-          <button
-            onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-            className="lg:hidden text-gray-600 p-1 ml-auto flex-shrink-0"
-          >
-            <SearchIcon />
-          </button>
 
           <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
             {!token ? (
@@ -274,22 +190,6 @@ export default function Navbar() {
             )}
           </div>
         </div>
-
-        {mobileSearchOpen && (
-          <div className="lg:hidden px-4 pb-3">
-            <div className="flex items-center bg-white rounded-lg px-3 gap-2 ring-2 ring-blue-500">
-              <span className="text-gray-400">
-                <SearchIcon />
-              </span>
-              <input
-                autoFocus
-                type="text"
-                placeholder="Cari pelatihan..."
-                className="flex-1 bg-transparent border-none outline-none text-sm py-2.5"
-              />
-            </div>
-          </div>
-        )}
       </nav>
 
       {mobileMenuOpen && (
@@ -305,7 +205,6 @@ export default function Navbar() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-5 border-b border-gray-100">
-          <Logo />
           <div className="flex gap-2 mt-4">
             <button className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:border-blue-400 transition-colors">
               Masuk

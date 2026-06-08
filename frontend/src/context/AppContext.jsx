@@ -91,11 +91,15 @@ const AppContextProvider = (props) => {
 
   const updateProfile = async (formData) => {
     try {
-      const { data } = await axios.put(backendUrl + "/api/user/update-profile", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const { data } = await axios.put(
+        backendUrl + "/api/user/update-profile",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (data.success) {
         setUserData(data.userData);
         toast.success("Profil berhasil diperbarui!");
@@ -135,13 +139,24 @@ const AppContextProvider = (props) => {
   };
 
   const getRecommendation = async (formData) => {
+  try {
     const { data } = await axios.post(
       `${backendUrl}/api/user/recommendation`,
-      formData,
+      formData
     );
 
+    if (!data.success) {
+      toast.info("Tidak ada rekomendasi yang cocok dengan kriteria yang dipilih.");
+      return null;
+    }
+
     return data;
-  };
+  } catch (error) {
+    console.error(error);
+    toast.error("Gagal mendapatkan rekomendasi.");
+    return null;
+  }
+};
 
   const makeOrder = async (paketId) => {
     try {
@@ -185,44 +200,38 @@ const AppContextProvider = (props) => {
   };
 
   const submitPayment = async (orderId, paymentProof) => {
-  try {
-    const formData = new FormData();
+    try {
+      const formData = new FormData();
 
-    formData.append(
-      "paymentProof",
-      paymentProof
-    );
+      formData.append("paymentProof", paymentProof);
 
-    const { data } =
-      await axios.post(
+      const { data } = await axios.post(
         `${backendUrl}/api/user/upload-payment-proof/${orderId}`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
-    if (data.success) {
-      toast.success(data.message);
+      if (data.success) {
+        toast.success(data.message);
 
-      await getUserOrderHistory();
+        await getUserOrderHistory();
 
-      return true;
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Gagal mengunggah bukti pembayaran!");
+
+      return false;
     }
-
-    return false;
-  } catch (error) {
-    console.error(error);
-
-    toast.error(
-      "Gagal mengunggah bukti pembayaran!"
-    );
-
-    return false;
-  }
-};
+  };
 
   const value = {
     backendUrl,
