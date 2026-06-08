@@ -12,45 +12,6 @@ const Footer = () => {
               terpercaya di seluruh Indonesia.
             </p>
           </div>
-          {[
-            {
-              title: "Pelatihan",
-              links: [
-                "Semua Pelatihan",
-                "Pelatihan Gratis",
-                "Sertifikasi",
-                "Pelatihan Online",
-              ],
-            },
-            {
-              title: "Tentang",
-              links: ["Tentang Kami", "Lembaga Mitra", "Akreditasi", "Karir"],
-            },
-            {
-              title: "Bantuan",
-              links: [
-                "Pusat Bantuan",
-                "Syarat & Ketentuan",
-                "Kebijakan Privasi",
-                "Hubungi Kami",
-              ],
-            },
-          ].map((col) => (
-            <div key={col.title}>
-              <div className="text-white font-bold text-[14px] mb-3">
-                {col.title}
-              </div>
-              <ul className="space-y-2">
-                {col.links.map((l) => (
-                  <li key={l}>
-                    <button className="text-[13px] text-gray-500 hover:text-white transition-colors">
-                      {l}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
         <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[12px] text-gray-600">

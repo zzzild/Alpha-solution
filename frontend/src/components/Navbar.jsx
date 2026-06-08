@@ -202,7 +202,6 @@ function MobileNavItem({ item }) {
 // Main Component
 export default function Navbar() {
   const { token, userData } = useContext(AppContext);
-  
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -210,12 +209,6 @@ export default function Navbar() {
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
-        @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes slideIn { from { transform:translateX(-100%); } to { transform:translateX(0); } }
-      `}</style>
-
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-[60px] flex items-center gap-3">
           <button
