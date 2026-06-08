@@ -284,7 +284,6 @@ const RekomendasiPage = () => {
         setResults(response);
       } else {
         setResults(null);
-        alert(response?.message || "Tidak ada rekomendasi");
       }
     } catch (error) {
       console.log(error);
