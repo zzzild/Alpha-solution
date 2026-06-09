@@ -166,7 +166,7 @@ export default function HomePage() {
               </a>
             </div>
 
-            <PaketCard />
+            <PaketCard limit={6}/>
 
             <div className="flex justify-center mt-10">
               <a

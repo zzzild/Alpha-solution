@@ -3,12 +3,14 @@ import {AppContext} from '../context/AppContext'
 import { useContext } from 'react';
 import {Link} from 'react-router-dom';
 
-const PaketCard = () => {
+const PaketCard = ({limit}) => {
     const {paket} = useContext(AppContext);
+
+    const displayPaket = limit ? paket.slice(0, limit) : paket
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      {paket?.map((item) => (
+      {displayPaket?.map((item) => (
         <Link
           key={item.paketId}
           to={`/pelatihandetail/${item.paketId}`}

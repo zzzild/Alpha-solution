@@ -7,6 +7,7 @@ import {
 } from "../components/Icons";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
@@ -48,20 +49,26 @@ function Modal({ children }) {
 
 const DetailPaket = () => {
   const { paketId } = useParams();
-  const { paketInfo, fetchPaketInfo, makeOrder, submitPayment } =
+  const { paketInfo, fetchPaketInfo, makeOrder, submitPayment, token } =
     useContext(AppContext);
-
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentProof, setPaymentProof] = useState(null);
   const [currentOrderId, setCurrentOrderId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPaketInfo(paketId);
   }, [paketId]);
 
-  const handleBuyNow = () => setShowConfirmModal(true);
+  const handleBuyNow = () =>{ 
+    if (!token) {
+      toast.error("Silahkan login terlebih dahulu")
+      navigate('/login')
+      return;
+    }
+    setShowConfirmModal(true)};
 
   const confirmOrder = async () => {
     try {

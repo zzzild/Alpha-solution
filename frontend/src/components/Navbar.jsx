@@ -46,13 +46,6 @@ const ChevronDown = ({ cls = "w-3.5 h-3.5" }) => (
   </svg>
 );
 
-// Dummy Data
-const NAV_ITEMS = [
-  { label: "Beranda", href: "/" },
-  { label: "Rekomendasi", href: "/rekomendasi" },
-  { label: "Pemesanan", href: "/pemesanan" },
-];
-
 // Sub-Components
 function Logo() {
   return (
@@ -146,6 +139,21 @@ export default function Navbar() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const navItems = [
+    { label: "Beranda", href: "/" },
+    { label: "Rekomendasi", href: "/rekomendasi" },
+    { label: "Pelatihan", href: "/pelatihan" },
+
+    ...(token
+      ? [
+          {
+            label: "Pemesanan",
+            href: "/pemesanan",
+          },
+        ]
+      : []),
+  ];
+
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
@@ -158,14 +166,15 @@ export default function Navbar() {
           </button>
 
           <Logo />
+
           <div className="hidden lg:flex items-center gap-0.5 flex-1">
-            {NAV_ITEMS.map((item, i) => (
+            {navItems.map((item, i) => (
               <NavDropdown key={i} item={item} />
             ))}
           </div>
 
           <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-            {!token ? (
+            {!token && !userData ? (
               <>
                 <NavLink
                   to="/login"
@@ -184,7 +193,9 @@ export default function Navbar() {
             ) : (
               <NavLink to="/profile">
                 <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm cursor-pointer hover:scale-105 transition">
-                  {userData?.nameUser?.[0]?.toUpperCase() || "U"}
+                  {userData?.nameUser
+                    ? userData.nameUser[0].toUpperCase()
+                    : ""}
                 </div>
               </NavLink>
             )}
@@ -200,22 +211,39 @@ export default function Navbar() {
       )}
 
       <div
-        className={`fixed top-[60px] left-0 bottom-0 w-[300px] max-w-[85vw] bg-white z-50 overflow-y-auto shadow-2xl transition-transform duration-250 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
-        style={{ animation: mobileMenuOpen ? "slideIn 0.22s ease" : "none" }}
+        className={`fixed top-[60px] left-0 bottom-0 w-[300px] max-w-[85vw] bg-white z-50 overflow-y-auto shadow-2xl transition-transform duration-250 ${
+          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{
+          animation: mobileMenuOpen ? "slideIn 0.22s ease" : "none",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-5 border-b border-gray-100">
-          <div className="flex gap-2 mt-4">
-            <button className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:border-blue-400 transition-colors">
-              Masuk
-            </button>
-            <button className="flex-1 py-2.5 bg-primary hover:bg-lightprimary text-white rounded-lg text-sm font-semibold transition-colors">
-              Daftar
-            </button>
-          </div>
+          {!token ? (
+            <div className="flex gap-2 mt-4">
+              <NavLink
+                to="/login"
+                className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 text-center"
+              >
+                Masuk
+              </NavLink>
+
+              <NavLink
+                to="/register"
+                className="flex-1 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold text-center"
+              >
+                Daftar
+              </NavLink>
+            </div>
+          ) : (
+            <div className="font-semibold text-gray-700">
+              {userData?.nameUser}
+            </div>
+          )}
         </div>
 
-        {NAV_ITEMS.map((item, i) => (
+        {navItems.map((item, i) => (
           <MobileNavItem key={i} item={item} />
         ))}
       </div>
