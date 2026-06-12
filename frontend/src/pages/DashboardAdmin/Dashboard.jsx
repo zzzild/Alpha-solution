@@ -135,9 +135,9 @@ const Dashboard = () => {
         </div>
         <div className="relative">
           <p className="text-blue-200 text-sm font-medium mb-1">
-            Kamis, 28 Mei 2026
+            28 Mei
           </p>
-          <h1 className="text-2xl font-bold mb-1">Selamat datang kembali 👋</h1>
+          <h1 className="text-2xl font-bold mb-1">Selamat datang kembali, Admin!</h1>
           <p className="text-blue-100 text-sm">
             Ada <span className="font-semibold text-white">4 pelatihan</span>{" "}
             yang sedang berjalan saat ini.
@@ -172,7 +172,7 @@ const Dashboard = () => {
             Pelatihan Sedang Berjalan
           </h2>
           <Link
-            to="/dashboard/rekrutmen"
+            to="/admin/pelatihanadmin"
             className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
           >
             Lihat semua{" "}

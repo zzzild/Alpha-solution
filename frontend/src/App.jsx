@@ -4,6 +4,7 @@ import Pelatihan from "./pages/Pelatihan";
 import DashboardLayout from "./components/DashboardComponents/DashboardLayout";
 import Dashboard from "./pages/DashboardAdmin/Dashboard";
 import PelatihanAdmin from "./pages/DashboardAdmin/PelatihanAdmin";
+import Pemesanan from "./pages/DashboardAdmin/Pemesanan";
 import OrderPaket from "./pages/OrderPaket";
 import Rekomendasi from "./pages/RekomendasiPage";
 import Login from "./components/DashboardComponents/Login";
@@ -31,10 +32,8 @@ const App = () => {
         <Route path="/pemesanan" element={<MyOrders />} />
         <Route path="/admin" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="pelatihanadmin" element={<PelatihanAdmin />} />
-        </Route>
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
+          <Route path="paket-pelatihan" element={<PelatihanAdmin />} />
+          <Route path="pemesanan" element={<Pemesanan />} />
           <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Routes>
