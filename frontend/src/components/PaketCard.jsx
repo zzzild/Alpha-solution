@@ -1,12 +1,12 @@
-import React from 'react'
-import {AppContext} from '../context/AppContext'
-import { useContext } from 'react';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
-const PaketCard = ({limit}) => {
-    const {paket} = useContext(AppContext);
+const PaketCard = ({ limit }) => {
+  const { paket } = useContext(AppContext);
 
-    const displayPaket = limit ? paket.slice(0, limit) : paket
+  const displayPaket = limit ? paket.slice(0, limit) : paket;
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -42,28 +42,24 @@ const PaketCard = ({limit}) => {
                 {item.namePaket}
               </div>
 
-              <div className="flex flex-wrap gap-1.5 mt-2 min-h-[28px]">
-                {item.sertifikat === "ada" && (
-                  <span className="px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 text-[11px] text-gray-500">
-                    Sertifikat
-                  </span>
-                )}
-
-                <span className="px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 text-[11px] text-gray-500 capitalize">
-                  {item.metode}
-                </span>
-
-                <span className="px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 text-[11px] text-gray-500 capitalize">
+              <div className="flex flex-wrap gap-2 mb-4">
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11.5px] font-semibold capitalize">
                   {item.tingkatKesulitan}
                 </span>
+                <span className="px-2.5 py-1 rounded-full bg-blue-50 text-bg-secondary text-[11.5px] font-semibold capitalize">
+                  {item.metode}
+                </span>
+                {item.sertifikat === "ada" && (
+                  <span className="px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[11.5px] font-semibold">
+                    ✓ Sertifikat
+                  </span>
+                )}
               </div>
 
               <div className="mt-auto">
                 <div className="flex items-end justify-between mt-3">
                   <div>
-                    <div className="text-[10.5px] text-gray-400">
-                      Harga
-                    </div>
+                    <div className="text-[10.5px] text-gray-400">Harga</div>
 
                     <div className="text-lg font-extrabold text-gray-900">
                       Rp {item.price.toLocaleString("id-ID")}
@@ -76,7 +72,7 @@ const PaketCard = ({limit}) => {
         </Link>
       ))}
     </section>
-  )
-}
+  );
+};
 
-export default PaketCard
+export default PaketCard;

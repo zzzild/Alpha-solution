@@ -38,9 +38,9 @@ const MyOrders = () => {
       <Navbar />
       <div className="py-16 sm:py-20 min-h-screen">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 space-y-4">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold ">
-              Pesanan <span className="text-secondary">Saya</span>
+          <div className="mb-8 fade-up">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-2">
+              Pesanan Saya
             </h1>
           </div>
 

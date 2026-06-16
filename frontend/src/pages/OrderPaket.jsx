@@ -62,13 +62,14 @@ const DetailPaket = () => {
     fetchPaketInfo(paketId);
   }, [paketId]);
 
-  const handleBuyNow = () =>{ 
+  const handleBuyNow = () => {
     if (!token) {
-      toast.error("Silahkan login terlebih dahulu")
-      navigate('/login')
+      toast.error("Silahkan login terlebih dahulu");
+      navigate("/login");
       return;
     }
-    setShowConfirmModal(true)};
+    setShowConfirmModal(true);
+  };
 
   const confirmOrder = async () => {
     try {

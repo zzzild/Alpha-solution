@@ -3,73 +3,18 @@ import Navbar from "./../components/Navbar";
 import Footer from "./../components/Footer";
 import Hero from "../components/Hero";
 import Statistik from "../components/Statistik";
-import Category from "../components/Category";
 import PaketCard from "../components/PaketCard";
 import WhyUs from "../components/WhyUs";
+import {
+  ChevronRight,
+  ArrowRight,
+  SendIcon,
+  CheckCircle,
+} from "../components/Icons";
 
-/* ─────────────────────────── ICONS ─────────────────────────── */
-
-const ChevronRight = () => (
-  <svg
-    className="w-4 h-4"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="9 18 15 12 9 6" />
-  </svg>
-);
-
-const ArrowRight = () => (
-  <svg
-    className="w-4 h-4"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
-const SendIcon = () => (
-  <svg
-    className="w-4 h-4"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <line x1="22" y1="2" x2="11" y2="13" />
-    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-  </svg>
-);
-const CheckCircle = () => (
-  <svg
-    className="w-5 h-5 text-blue-600 flex-shrink-0"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-    <polyline points="22 4 12 14.01 9 11.01" />
-  </svg>
-);
-/* ─────────────────────────── TYPING PLACEHOLDER ─────────────────────────── */
 const PLACEHOLDERS = [
-  "Aku ingin jadi barista profesional...",
-  "Cari pelatihan digital marketing...",
-  "Aku mau belajar las bersertifikat...",
+  "Cari pelatihan machine learning...",
+  "Aku mau belajar web bersertifikat...",
   "Cari pelatihan gratis...",
   "Aku ingin kerja di bidang IT...",
 ];
@@ -142,9 +87,6 @@ export default function HomePage() {
 
         {/* ════════════════ STATS STRIP ════════════════ */}
         <Statistik />
-
-        {/* ════════════════ CATEGORIES ════════════════ */}
-        <Category />
 
         {/* ════════════════ POPULAR TRAININGS ════════════════ */}
         <section className="py-16 sm:py-20 bg-white">

@@ -386,7 +386,7 @@ const RekomendasiPage = () => {
               <SparkleIcon /> Sistem Rekomendasi
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-2">
-              Rekomendasi Paket Training
+              Rekomendasi Paket Pelatihan
             </h1>
             <p className="text-[14.5px] text-gray-500 max-w-xl leading-relaxed">
               Isi preferensi Anda dan sistem akan merekomendasikan paket terbaik
@@ -400,7 +400,7 @@ const RekomendasiPage = () => {
           >
             <div className="px-6 pt-5 pb-4 border-b border-gray-50">
               <h2 className="text-[15px] font-bold text-gray-800">
-                Preferensi Training
+                Preferensi Pelatihan
               </h2>
               <p className="text-[12.5px] text-gray-400 mt-0.5">
                 Pilih kriteria sesuai kebutuhan Anda
