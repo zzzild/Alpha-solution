@@ -65,7 +65,7 @@ const DetailPaket = () => {
   const handleBuyNow = () => {
     if (!token) {
       toast.error("Silahkan login terlebih dahulu");
-      navigate("/login");
+      navigate("/login", scrollTo(0,0));
       return;
     }
     setShowConfirmModal(true);

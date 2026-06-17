@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AdminContext } from "../../context/AdminContext";
 
 // Dummy Data
 const INITIAL_DATA = [
@@ -77,6 +78,7 @@ const METHOD_COLOR = {
 
 // Component
 export default function PaketPage() {
+  const {paket} = useContext(AdminContext)
   const [data, setData] = useState(INITIAL_DATA);
   const [search, setSearch] = useState("");
   const [filterDifficulty, setFilterDifficulty] = useState("semua");

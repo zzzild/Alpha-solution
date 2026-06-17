@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import { AppContext } from "../../context/AppContext";
+import { AdminContext } from "../../context/AdminContext";
 
 /* ─── ICONS ─── */
 const EyeIcon = ({ open }) => (
@@ -58,8 +59,9 @@ const LockIcon = () => (
   </svg>
 );
 
-export default function LoginPage() {
+export default function LoginPage({admin}) {
   const { token,  loginUser } = useContext(AppContext);
+  const {loginAdmin} = useContext(AdminContext)
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -74,16 +76,18 @@ export default function LoginPage() {
 
   setLoading(true);
 
-  const success =
-  await loginUser(
-    email,
-    password
-  );
+  let success;
+
+  if (admin) {
+    success = await loginAdmin(email, password);
+  } else {
+    success = await loginUser(email, password);
+  }
 
   setLoading(false);
 
   if (success) {
-    navigate("/");
+    navigate(admin ? "/admin" : "/");
   }
 };
   
