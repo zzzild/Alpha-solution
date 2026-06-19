@@ -3,12 +3,14 @@ import { useState } from "react";
 // Dummy Data
 const STATUS_OPTIONS = ["menunggu", "dikonfirmasi", "ditolak"];
 
+// Status Color
 const STATUS_COLOR = {
   menunggu: "bg-amber-50 text-amber-700 border-amber-200",
   dikonfirmasi: "bg-emerald-50 text-emerald-700 border-emerald-200",
   ditolak: "bg-red-50 text-red-600 border-red-200",
 };
 
+// Status Icon
 const STATUS_ICON = {
   menunggu: (
     <svg

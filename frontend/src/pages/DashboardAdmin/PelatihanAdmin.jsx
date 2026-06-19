@@ -1,94 +1,62 @@
 import { useContext, useState } from "react";
 import { AdminContext } from "../../context/AdminContext";
+import {
+  INITIAL_DATA,
+  DIFFICULTY_OPTIONS,
+  METHOD_OPTIONS,
+  DURATION_OPTIONS,
+  ACCESS_OPTIONS,
+  EMPTY_FORM,
+  DIFFICULTY_COLOR,
+  METHOD_COLOR,
+} from "../../components/DashboardComponents/Pelatihan/PelatihanConstants";
 
-// Dummy Data
-const INITIAL_DATA = [
-  {
-    id: 1,
-    title: "React.js untuk Pemula",
-    price: 350000,
-    duration: "8 minggu",
-    accessPeriod: "3 bulan",
-    totalModules: 12,
-    sertificate: true,
-    difficulty: "pemula",
-    method: "online",
-    image: "https://placehold.co/400x220/3b82f6/ffffff?text=React.js",
-    description:
-      "Belajar React.js dari dasar hingga membuat aplikasi web modern yang responsif.",
-  },
-  {
-    id: 2,
-    title: "UI/UX Figma Profesional",
-    price: 275000,
-    duration: "6 minggu",
-    accessPeriod: "2 bulan",
-    totalModules: 9,
-    sertificate: true,
-    difficulty: "menengah",
-    method: "online",
-    image: "https://placehold.co/400x220/ec4899/ffffff?text=UI/UX+Figma",
-    description:
-      "Kuasai Figma untuk desain antarmuka yang menarik dan pengalaman pengguna yang optimal.",
-  },
-];
-const DIFFICULTY_OPTIONS = ["pemula", "menengah", "lanjutan"];
-const METHOD_OPTIONS = ["online", "offline", "hybrid"];
-const DURATION_OPTIONS = [
-  "1 minggu",
-  "2 minggu",
-  "4 minggu",
-  "5 minggu",
-  "6 minggu",
-  "8 minggu",
-  "10 minggu",
-  "12 minggu",
-];
-const ACCESS_OPTIONS = [
-  "1 bulan",
-  "2 bulan",
-  "3 bulan",
-  "4 bulan",
-  "6 bulan",
-  "12 bulan",
-  "Selamanya",
-];
-const EMPTY_FORM = {
-  title: "",
-  price: "",
-  duration: "4 minggu",
-  accessPeriod: "1 bulan",
-  totalModules: "",
-  sertificate: false,
-  difficulty: "pemula",
-  method: "online",
-  image: "",
-  description: "",
-};
-const DIFFICULTY_COLOR = {
-  pemula: "bg-green-50 text-green-700 border-green-200",
-  menengah: "bg-amber-50 text-amber-700 border-amber-200",
-  lanjutan: "bg-red-50 text-red-700 border-red-200",
-};
-const METHOD_COLOR = {
-  online: "bg-blue-50 text-blue-600 border-blue-200",
-  offline: "bg-slate-100 text-slate-600 border-slate-200",
-  hybrid: "bg-purple-50 text-purple-700 border-purple-200",
-};
+import PelatihanToolbar from "../../components/DashboardComponents/Pelatihan/PelatihanToolbar";
+import PelatihanTable from "../../components/DashboardComponents/Pelatihan/PelatihanTable";
+// import PelatihanModal from "../../components/DashboardComponents/Pelatihan/PelatihanModal";
 
-// Component
+/**
+ * PaketPage — halaman manajemen paket kursus untuk panel admin.
+ *
+ * Fitur:
+ * - Menampilkan daftar paket dalam bentuk tabel responsif
+ * - Pencarian paket berdasarkan nama
+ * - Filter paket berdasarkan tingkat kesulitan
+ * - Tambah, lihat detail, edit, dan hapus paket via modal
+ *
+ * @returns {JSX.Element}
+ */
 export default function PaketPage() {
-  const {paket} = useContext(AdminContext)
+  // Mengambil data paket dari context admin (saat ini belum digunakan secara aktif)
+  const { paket } = useContext(AdminContext);
+
+  // State daftar paket yang ditampilkan
   const [data, setData] = useState(INITIAL_DATA);
+
+  // State kata kunci pencarian
   const [search, setSearch] = useState("");
+
+  // State filter tingkat kesulitan; "semua" berarti tidak ada filter
   const [filterDifficulty, setFilterDifficulty] = useState("semua");
 
+  /**
+   * State modal. Nilainya null jika modal tertutup,
+   * atau objek { mode, item? } jika modal terbuka.
+   * mode: "create" | "edit" | "view" | "delete"
+   */
   const [modal, setModal] = useState(null);
 
+  /**
+   * Menambahkan paket baru ke daftar.
+   * Mengonversi price dan totalModules dari string ke number,
+   * lalu menempatkan item baru di awal array.
+   *
+   * @param {Object} form - Data form dari modal create
+   */
   const handleCreate = (form) => {
     const newItem = {
       ...form,
-      id: Date.now(),
+      id: Date.now(), // ID unik berbasis timestamp
       price: Number(form.price),
       totalModules: Number(form.totalModules),
     };
@@ -96,6 +64,11 @@ export default function PaketPage() {
     setModal(null);
   };
 
+  /**
+   * Memperbarui data paket yang sudah ada berdasarkan id.
+   *
+   * @param {Object} form - Data form dari modal edit (harus mengandung `id`)
+   */
   const handleUpdate = (form) => {
     setData((prev) =>
       prev.map((d) =>
@@ -111,11 +84,20 @@ export default function PaketPage() {
     setModal(null);
   };
 
+  /**
+   * Menghapus paket dari daftar berdasarkan id.
+   *
+   * @param {number} id - ID paket yang akan dihapus
+   */
   const handleDelete = (id) => {
     setData((prev) => prev.filter((d) => d.id !== id));
     setModal(null);
   };
 
+  /**
+   * Data yang sudah difilter berdasarkan `search` dan `filterDifficulty`.
+   * Dihitung ulang setiap kali salah satu dependency berubah.
+   */
   const filtered = data.filter((d) => {
     const matchSearch = d.title.toLowerCase().includes(search.toLowerCase());
     const matchDiff =
@@ -125,6 +107,7 @@ export default function PaketPage() {
 
   return (
     <div className="space-y-5">
+      {/* ── Header: judul halaman + tombol tambah ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl font-bold text-slate-800">Manajemen Paket</h1>
@@ -154,284 +137,23 @@ export default function PaketPage() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-          <input
-            type="text"
-            placeholder="Cari nama paket..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 bg-slate-50"
-          />
-        </div>
-        <select
-          value={filterDifficulty}
-          onChange={(e) => setFilterDifficulty(e.target.value)}
-          className="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 text-slate-600 cursor-pointer"
-        >
-          <option value="semua">Semua Kesulitan</option>
-          {DIFFICULTY_OPTIONS.map((s) => (
-            <option key={s} className="capitalize">
-              {s}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* ── Toolbar: input pencarian + dropdown filter kesulitan ── */}
+      <PelatihanToolbar
+        search={search}
+        setSearch={setSearch}
+        filterDifficulty={filterDifficulty}
+        setFilterDifficulty={setFilterDifficulty}
+      />
 
-      <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">
-                  Paket
-                </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden sm:table-cell">
-                  Harga
-                </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden md:table-cell">
-                  Durasi & Akses
-                </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden lg:table-cell">
-                  Modul
-                </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden lg:table-cell">
-                  Sertifikat
-                </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden sm:table-cell">
-                  Kesulitan
-                </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden lg:table-cell">
-                  Metode
-                </th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">
-                  Aksi
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {filtered.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="text-center py-16 text-slate-400">
-                    <svg
-                      className="w-10 h-10 mx-auto mb-3 text-slate-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                      />
-                    </svg>
-                    <p className="text-sm font-medium">
-                      Tidak ada data ditemukan
-                    </p>
-                    <p className="text-xs mt-1">
-                      Coba ubah filter atau tambah paket baru
-                    </p>
-                  </td>
-                </tr>
-              ) : (
-                filtered.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="hover:bg-slate-50/60 transition-colors group"
-                  >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={
-                            item.image ||
-                            "https://placehold.co/64x40/e2e8f0/94a3b8?text=No+Image"
-                          }
-                          alt={item.title}
-                          className="w-16 h-10 object-cover rounded-lg shrink-0 border border-slate-100"
-                          onError={(e) => {
-                            e.target.src =
-                              "https://placehold.co/64x40/e2e8f0/94a3b8?text=No+Image";
-                          }}
-                        />
-                        <div>
-                          <p className="font-medium text-slate-800 leading-tight">
-                            {item.title}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 hidden sm:table-cell">
-                      <p className="font-semibold text-slate-800">
-                        {formatPrice(item.price)}
-                      </p>
-                    </td>
-                    <td className="px-4 py-3 hidden md:table-cell">
-                      <p className="text-slate-700 text-xs font-medium">
-                        {item.duration}
-                      </p>
-                      <p className="text-slate-400 text-xs">
-                        Akses {item.accessPeriod}
-                      </p>
-                    </td>
-                    <td className="px-4 py-3 hidden lg:table-cell">
-                      <p className="text-slate-700 text-sm font-medium">
-                        {item.totalModules} modul
-                      </p>
-                    </td>
-                    <td className="px-4 py-3 hidden lg:table-cell">
-                      {item.sertificate ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                          <svg
-                            className="w-3 h-3"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2.5}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          Ada
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-400 border border-slate-200">
-                          <svg
-                            className="w-3 h-3"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2.5}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                          Tidak
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 hidden sm:table-cell">
-                      <span
-                        className={`inline-block capitalize text-xs font-medium px-2.5 py-1 rounded-full border ${DIFFICULTY_COLOR[item.difficulty]}`}
-                      >
-                        {item.difficulty}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 hidden lg:table-cell">
-                      <span
-                        className={`inline-block capitalize text-xs font-medium px-2.5 py-1 rounded-full border ${METHOD_COLOR[item.method]}`}
-                      >
-                        {item.method}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => setModal({ mode: "view", item })}
-                          title="Detail"
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-50 text-blue-500 transition-colors cursor-pointer"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => setModal({ mode: "edit", item })}
-                          title="Edit"
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-amber-50 text-amber-500 transition-colors cursor-pointer"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => setModal({ mode: "delete", item })}
-                          title="Hapus"
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50 text-red-400 transition-colors cursor-pointer"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      {/* ── Tabel daftar paket ── */}
+      <PelatihanTable
+        filtered={filtered}
+        data={data}
+        setModal={setModal}
+        formatPrice={formatPrice}
+      />
 
-        {filtered.length > 0 && (
-          <div className="px-4 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500">
-            <span>
-              Menampilkan {filtered.length} dari {data.length} paket
-            </span>
-            <span className="hidden sm:block">
-              {data.filter((d) => d.difficulty === "pemula").length} pemula ·{" "}
-              {data.filter((d) => d.difficulty === "menengah").length} menengah
-              · {data.filter((d) => d.difficulty === "lanjutan").length}{" "}
-              lanjutan
-            </span>
-          </div>
-        )}
-      </div>
-
+      {/* Render modal hanya jika state `modal` tidak null */}
       {modal && (
         <Modal
           modal={modal}
@@ -445,20 +167,56 @@ export default function PaketPage() {
   );
 }
 
-// Modal
+// =============================================================================
+// KOMPONEN MODAL
+// =============================================================================
+
+/**
+ * Modal — dialog multi-mode untuk operasi CRUD paket.
+ *
+ * Mode yang didukung:
+ * - "create" : form tambah paket baru
+ * - "edit"   : form edit paket yang sudah ada
+ * - "view"   : tampilan detail read-only
+ * - "delete" : konfirmasi penghapusan
+ *
+ * @param {Object}   props
+ * @param {Object}   props.modal     - Objek { mode, item? } dari state parent
+ * @param {Function} props.onClose   - Callback menutup modal
+ * @param {Function} props.onCreate  - Callback tambah paket baru
+ * @param {Function} props.onUpdate  - Callback simpan perubahan paket
+ * @param {Function} props.onDelete  - Callback hapus paket berdasarkan id
+ */
 function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
   const { mode, item } = modal;
 
+  /**
+   * State form: diinisialisasi dengan EMPTY_FORM saat create,
+   * atau salinan data item yang dipilih saat edit/view/delete.
+   */
   const [form, setForm] = useState(
     mode === "create" ? EMPTY_FORM : { ...item },
   );
+
+  /** State pesan error validasi per field. */
   const [errors, setErrors] = useState({});
 
+  /**
+   * Memperbarui satu field pada state form dan menghapus error field tersebut.
+   *
+   * @param {string} key - Nama field
+   * @param {*}      val - Nilai baru
+   */
   const set = (key, val) => {
     setForm((f) => ({ ...f, [key]: val }));
     setErrors((e) => ({ ...e, [key]: "" }));
   };
 
+  /**
+   * Memvalidasi field wajib sebelum form dikirim.
+   *
+   * @returns {Object} Objek error; kosong jika semua valid
+   */
   const validate = () => {
     const e = {};
     if (!form.title.trim()) e.title = "Nama paket wajib diisi";
@@ -468,6 +226,10 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
     return e;
   };
 
+  /**
+   * Menjalankan validasi lalu memanggil onCreate atau onUpdate sesuai mode.
+   * Jika ada error, form tidak dikirim dan pesan error ditampilkan.
+   */
   const handleSubmit = () => {
     const e = validate();
     if (Object.keys(e).length > 0) {
@@ -477,6 +239,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
     mode === "create" ? onCreate(form) : onUpdate(form);
   };
 
+  /** Judul header modal berdasarkan mode aktif. */
   const titles = {
     create: "Tambah Paket",
     edit: "Edit Paket",
@@ -486,17 +249,22 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Overlay semi-transparan; klik untuk menutup modal */}
       <div
         className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
         onClick={onClose}
       />
+
+      {/* Kontainer modal */}
       <div
         className={`relative bg-white rounded-2xl shadow-2xl w-full overflow-hidden flex flex-col max-h-[90vh] ${mode === "delete" ? "max-w-md" : "max-w-2xl"}`}
       >
+        {/* ── Header modal ── */}
         <div
           className={`flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0 ${mode === "delete" ? "bg-red-50" : mode === "view" ? "bg-blue-50" : "bg-white"}`}
         >
           <div className="flex items-center gap-3">
+            {/* Ikon header sesuai mode */}
             <div
               className={`w-9 h-9 rounded-xl flex items-center justify-center ${mode === "delete" ? "bg-red-100" : mode === "view" ? "bg-blue-100" : "bg-blue-600"}`}
             >
@@ -569,6 +337,8 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
             </div>
             <h2 className="font-bold text-slate-800">{titles[mode]}</h2>
           </div>
+
+          {/* Tombol tutup modal */}
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
@@ -589,7 +359,9 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
           </button>
         </div>
 
+        {/* ── Body modal (scrollable) ── */}
         <div className="overflow-y-auto flex-1 p-6">
+          {/* -- Mode DELETE: konfirmasi penghapusan -- */}
           {mode === "delete" && (
             <div className="text-center">
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -623,8 +395,10 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
             </div>
           )}
 
+          {/* -- Mode VIEW: tampilan detail read-only -- */}
           {mode === "view" && (
             <div className="space-y-5">
+              {/* Gambar sampul paket */}
               <img
                 src={
                   item.image ||
@@ -638,6 +412,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 }}
               />
 
+              {/* Judul, badge, dan harga */}
               <div className="flex items-start gap-4">
                 <div className="flex-1">
                   <h3 className="font-bold text-slate-800 text-lg leading-tight">
@@ -681,6 +456,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 </div>
               </div>
 
+              {/* Deskripsi paket (opsional) */}
               {item.description && (
                 <div className="bg-slate-50 rounded-xl p-4">
                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
@@ -692,6 +468,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 </div>
               )}
 
+              {/* Grid informasi detail paket */}
               <div className="grid grid-cols-2 gap-3">
                 {[
                   { label: "Harga", value: formatPrice(item.price) },
@@ -721,8 +498,10 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
             </div>
           )}
 
+          {/* -- Mode CREATE / EDIT: form input data paket -- */}
           {(mode === "create" || mode === "edit") && (
             <div className="space-y-4">
+              {/* Field nama paket */}
               <Field label="Nama Paket" required error={errors.title}>
                 <input
                   type="text"
@@ -733,6 +512,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 />
               </Field>
 
+              {/* Field harga */}
               <Field label="Harga (Rp)" required error={errors.price}>
                 <input
                   type="number"
@@ -744,6 +524,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 />
               </Field>
 
+              {/* Field durasi dan masa akses dalam satu baris */}
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Durasi" required>
                   <select
@@ -769,6 +550,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 </Field>
               </div>
 
+              {/* Field jumlah modul dan tingkat kesulitan dalam satu baris */}
               <div className="grid grid-cols-2 gap-4">
                 <Field
                   label="Jumlah Modul"
@@ -799,6 +581,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 </Field>
               </div>
 
+              {/* Field metode pembelajaran */}
               <Field label="Metode Pembelajaran" required>
                 <select
                   value={form.method}
@@ -813,7 +596,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 </select>
               </Field>
 
-              {/* Sertifikat toggle */}
+              {/* Toggle sertifikat: aktif/nonaktif dengan animasi */}
               <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white">
                 <div>
                   <p className="text-xs font-semibold text-slate-600">
@@ -830,6 +613,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                     form.sertificate ? "bg-blue-600" : "bg-slate-200"
                   }`}
                 >
+                  {/* Indikator posisi toggle */}
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
                       form.sertificate ? "translate-x-6" : "translate-x-1"
@@ -838,6 +622,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 </button>
               </div>
 
+              {/* Field URL gambar + preview jika URL diisi */}
               <Field label="URL Gambar">
                 <input
                   type="text"
@@ -846,6 +631,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                   onChange={(e) => set("image", e.target.value)}
                   className={inputCls()}
                 />
+                {/* Preview gambar; disembunyikan jika URL tidak valid */}
                 {form.image && (
                   <img
                     src={form.image}
@@ -858,6 +644,7 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
                 )}
               </Field>
 
+              {/* Field deskripsi paket (opsional) */}
               <Field label="Deskripsi">
                 <textarea
                   rows={3}
@@ -871,13 +658,17 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
           )}
         </div>
 
+        {/* ── Footer modal: tombol aksi ── */}
         <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex justify-end gap-3 shrink-0">
+          {/* Tombol batal / tutup */}
           <button
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 active:scale-95 transition-all cursor-pointer"
           >
             {mode === "view" ? "Tutup" : "Batal"}
           </button>
+
+          {/* Tombol konfirmasi hapus (hanya mode delete) */}
           {mode === "delete" && (
             <button
               onClick={() => onDelete(item.id)}
@@ -886,6 +677,8 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
               Ya, Hapus
             </button>
           )}
+
+          {/* Tombol simpan (hanya mode create dan edit) */}
           {(mode === "create" || mode === "edit") && (
             <button
               onClick={handleSubmit}
@@ -900,6 +693,19 @@ function Modal({ modal, onClose, onCreate, onUpdate, onDelete }) {
   );
 }
 
+// =============================================================================
+// KOMPONEN PEMBANTU
+// =============================================================================
+
+/**
+ * Field — wrapper label + input + pesan error untuk satu field form.
+ *
+ * @param {Object}      props
+ * @param {string}      props.label    - Teks label
+ * @param {boolean}     [props.required] - Tampilkan tanda bintang merah jika true
+ * @param {string}      [props.error]  - Pesan error; ditampilkan di bawah input
+ * @param {JSX.Element} props.children - Elemen input/select/textarea
+ */
 function Field({ label, required, error, children }) {
   return (
     <div>
@@ -912,6 +718,17 @@ function Field({ label, required, error, children }) {
   );
 }
 
+// =============================================================================
+// UTILITAS
+// =============================================================================
+
+/**
+ * Menghasilkan kelas CSS Tailwind untuk elemen input/select/textarea.
+ * Menerapkan gaya error (merah) jika parameter `err` tidak kosong.
+ *
+ * @param {string} [err] - Pesan error; jika ada, gunakan gaya error
+ * @returns {string} String kelas CSS
+ */
 const inputCls = (err) =>
   `w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
     err
@@ -919,6 +736,13 @@ const inputCls = (err) =>
       : "border-slate-200 bg-white focus:ring-blue-500/20 focus:border-blue-400"
   }`;
 
+/**
+ * Memformat angka harga ke format mata uang Rupiah Indonesia.
+ * Menampilkan "Gratis" jika harga bernilai 0.
+ *
+ * @param {number} price - Nilai harga dalam Rupiah
+ * @returns {string} Harga terformat, mis. "Rp 350.000" atau "Gratis"
+ */
 const formatPrice = (price) => {
   if (price === 0) return "Gratis";
   return new Intl.NumberFormat("id-ID", {
