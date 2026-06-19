@@ -352,7 +352,6 @@ export {
   addPaket,
   deletePaket,
   updatePaket,
-  getPaket,
   addKriteria,
   deleteKriteria,
   updateKriteria,
