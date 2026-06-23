@@ -1,14 +1,13 @@
-import { DIFFICULTY_OPTIONS } from "./PelatihanConstants";
-
 const PelatihanToolbar = ({
   search,
   setSearch,
   filterDifficulty,
   setFilterDifficulty,
+  difficultyOptions,
 }) => {
   return (
     <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex flex-col sm:flex-row gap-3">
-      {/* Input pencarian */}
+
       <div className="relative flex-1">
         <svg
           className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"
@@ -33,7 +32,6 @@ const PelatihanToolbar = ({
         />
       </div>
 
-      {/* Filter kesulitan */}
       <select
         value={filterDifficulty}
         onChange={(e) => setFilterDifficulty(e.target.value)}
@@ -41,15 +39,17 @@ const PelatihanToolbar = ({
       >
         <option value="semua">Semua Kesulitan</option>
 
-        {DIFFICULTY_OPTIONS.map((s) => (
-          <option key={s} value={s} className="capitalize">
-            {s}
+        {difficultyOptions.map((difficulty) => (
+          <option
+            key={difficulty}
+            value={difficulty}
+          >
+            {difficulty}
           </option>
         ))}
       </select>
-    </div>
 
-    
+    </div>
   );
 };
 

@@ -52,7 +52,7 @@ const AdminContextProvider = (props) => {
 
       if (data.success) {
         toast.success("Paket berhasil ditambahkan!");
-        getPaket();
+        // getPaket();
       } else {
         toast.error("Gagal menambahkan paket!");
       }
@@ -75,7 +75,7 @@ const AdminContextProvider = (props) => {
 
       if (data.success) {
         toast.success("Paket berhasil dihapus!");
-        getPaket();
+        // getPaket();
       } else {
         toast.error("Gagal menghapus paket!");
       }
@@ -100,7 +100,7 @@ const AdminContextProvider = (props) => {
 
       if (data.success) {
         toast.success("Paket berhasil diperbarui!");
-        getPaket();
+        // getPaket();
       } else {
         toast.error("Gagal memperbarui paket!");
       }
@@ -189,27 +189,27 @@ const AdminContextProvider = (props) => {
     }
   };
 
-  const getPemesanan = async () => {
-    try {
-      const { data } = await axios.get(`${backendUrl}/api/admin/pemesanan`, {
-        headers: {
-          Authorization: `Bearer ${aToken}`,
-        },
-      });
-      if (data.success) {
-        setPemesanan(data.pemesanan);
-      } else {
-        console.error("Gagal mengambil data pemesanan:", data.message);
-        toast.error("Gagal mengambil data pemesanan!");
-      }
-    } catch (error) {
-      console.error(
-        "Terjadi kesalahan pada saat mengambil data pemesanan:",
-        error,
-      );
-      toast.error("Terjadi kesalahan pada saat mengambil data pemesanan!");
-    }
-  };
+  // const getPemesanan = async () => {
+  //   try {
+  //     const { data } = await axios.get(`${backendUrl}/api/admin/pemesanan`, {
+  //       headers: {
+  //         Authorization: `Bearer ${aToken}`,
+  //       },
+  //     });
+  //     if (data.success) {
+  //       setPemesanan(data.pemesanan);
+  //     } else {
+  //       console.error("Gagal mengambil data pemesanan:", data.message);
+  //       toast.error("Gagal mengambil data pemesanan!");
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Terjadi kesalahan pada saat mengambil data pemesanan:",
+  //       error,
+  //     );
+  //     toast.error("Terjadi kesalahan pada saat mengambil data pemesanan!");
+  //   }
+  // };
 
   const getDashboardStats = async () => {
     try {
@@ -241,15 +241,16 @@ const AdminContextProvider = (props) => {
     addKriteria,
     deleteKriteria,
     updateKriteria,
-    getPemesanan,
+    // getPemesanan,
     pemesanan,
     getDashboardStats,
-    dashDataStats,getPaket, paket
+    dashDataStats,
+    getPaket, paket
   };
 
   useEffect(() => {
     if (aToken) {
-      getPemesanan();
+      // getPemesanan();
       getDashboardStats();
       getPaket();
     }
