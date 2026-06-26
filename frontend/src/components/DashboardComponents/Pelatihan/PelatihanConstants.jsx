@@ -1,9 +1,8 @@
-// PelatihanConstants.jsx
-
 /**
  * Data awal dummy untuk ditampilkan sebelum data asli tersedia.
  * Setiap objek merepresentasikan satu paket kursus.
  */
+
 export const INITIAL_DATA = [
   {
     id: 1,

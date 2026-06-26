@@ -1,6 +1,5 @@
 import { useContext, useMemo, useState } from "react";
 import { AdminContext } from "../../context/AdminContext";
-
 import { formatPrice } from "../../components/DashboardComponents/Pelatihan/PelatihanUtils";
 import PelatihanToolbar from "../../components/DashboardComponents/Pelatihan/PelatihanToolbar";
 import PelatihanTable from "../../components/DashboardComponents/Pelatihan/PelatihanTable";
@@ -8,22 +7,13 @@ import PelatihanModal from "../../components/DashboardComponents/Pelatihan/Pelat
 import { AppContext } from "../../context/AppContext";
 
 export default function PelatihanAdmin() {
-  const {
-    addPaket,
-    updatePaket,
-    deletePaket,
-  } = useContext(AdminContext);
+  const { addPaket, updatePaket, deletePaket } = useContext(AdminContext);
 
-  const {
-    paket,
-  fetchPaket
-  } = useContext(AppContext);
+  const { paket, fetchPaket } = useContext(AppContext);
 
   const [search, setSearch] = useState("");
   const [filterDifficulty, setFilterDifficulty] = useState("semua");
   const [modal, setModal] = useState(null);
-
-  
 
   const data = useMemo(() => {
     return paket.map((item) => ({
@@ -80,39 +70,27 @@ export default function PelatihanAdmin() {
   };
 
   const filtered = data.filter((d) => {
-    const matchSearch = d.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const matchSearch = d.title.toLowerCase().includes(search.toLowerCase());
 
     const matchDiff =
-      filterDifficulty === "semua" ||
-      d.difficulty === filterDifficulty;
+      filterDifficulty === "semua" || d.difficulty === filterDifficulty;
 
     return matchSearch && matchDiff;
   });
 
   const difficultyOptions = useMemo(() => {
-  return [...new Set(data.map((item) => item.difficulty))]
-    .filter(Boolean);
-}, [data]);
-
+    return [...new Set(data.map((item) => item.difficulty))].filter(Boolean);
+  }, [data]);
 
   return (
     <div className="space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">
-            Manajemen Paket
-          </h1>
+          <h1 className="text-xl font-bold text-slate-800">Manajemen Paket</h1>
 
           <p className="text-sm text-slate-500 mt-0.5">
             {data.length} paket terdaftar ·{" "}
-            {
-              data.filter(
-                (d) => d.difficulty === "pemula"
-              ).length
-            }{" "}
-            untuk pemula
+            {data.filter((d) => d.difficulty === "pemula").length} untuk pemula
           </p>
         </div>
 
@@ -133,7 +111,6 @@ export default function PelatihanAdmin() {
               d="M12 4v16m8-8H4"
             />
           </svg>
-
           Tambah Paket
         </button>
       </div>
