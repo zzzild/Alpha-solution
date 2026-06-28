@@ -86,7 +86,7 @@ export const DIFFICULTY_COLOR = {
 
 /** Warna badge method */
 export const METHOD_COLOR = {
-  online: "bg-blue-50 text-blue-600 border-blue-200",
-  offline: "bg-slate-100 text-slate-600 border-slate-200",
+  vidio: "bg-blue-50 text-blue-600 border-blue-200",
+  "live class": "bg-green-100 text-green-600 border-green-200",
   hybrid: "bg-purple-50 text-purple-700 border-purple-200",
 };

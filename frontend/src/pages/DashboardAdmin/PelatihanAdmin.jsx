@@ -50,14 +50,14 @@ export default function PelatihanAdmin() {
   };
 
   const handleUpdate = async (paketId, formData) => {
-  try {
-    await updatePaket(paketId, formData);
-    await fetchPaket();
-    setModal(null);
-  } catch (error) {
-    console.log(error);
-  }
-};
+    try {
+      await updatePaket(paketId, formData);
+      await fetchPaket();
+      setModal(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleDelete = async (paketId) => {
     try {
@@ -93,24 +93,10 @@ export default function PelatihanAdmin() {
             {data.filter((d) => d.difficulty === "pemula").length} untuk pemula
           </p>
         </div>
-
         <button
           onClick={() => setModal({ mode: "create" })}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-150 shadow-sm shadow-blue-200 cursor-pointer"
+          className="flex items-center gap-2 bg-green-600 hover:bg-green-700 active:scale-95 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-150 shadow-sm shadow-blue-200 cursor-pointer"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
           Tambah Paket
         </button>
       </div>

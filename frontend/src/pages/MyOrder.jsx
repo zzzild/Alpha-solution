@@ -112,12 +112,12 @@ const MyOrders = () => {
                   {order.paymentStatus === "completed" && (
                     <div className="mt-6 border-t pt-4 flex justify-between items-center">
                       <div className="text-green-600 font-semibold">
-                        ✅ Pembayaran Berhasil
+                        Pembayaran Berhasil
                       </div>
 
                       <button
                         onClick={() => generateInvoice(order)}
-                        className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                        className="px-5 py-2 rounded-lg bg-secondary text-white cursor-pointer"
                       >
                         Download Invoice
                       </button>
