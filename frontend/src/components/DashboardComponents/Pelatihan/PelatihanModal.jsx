@@ -82,13 +82,36 @@ export default function PelatihanModal({
 
   /** Validasi lalu panggil onCreate atau onUpdate sesuai mode. */
   const handleSubmit = () => {
-    const e = validate();
-    if (Object.keys(e).length > 0) {
-      setErrors(e);
-      return;
-    }
-    mode === "create" ? onCreate(form) : onUpdate(form);
-  };
+  const e = validate();
+
+  if (Object.keys(e).length > 0) {
+    setErrors(e);
+    return;
+  }
+  
+
+  const data = new FormData();
+
+  data.append("namePaket", form.title);
+  data.append("description", form.description);
+  data.append("price", form.price);
+  data.append("duration", form.duration);
+  data.append("jumlahModul", form.totalModules);
+  data.append("tingkatKesulitan", form.difficulty);
+  data.append("masaAkses", form.accessPeriod);
+  data.append("sertifikat", form.sertificate ? "ada" : "tidak");
+  data.append("metode", form.method);
+
+  if (form.image instanceof File) {
+  data.append("image", form.image);
+}
+
+  if (mode === "create") {
+    onCreate(data);
+  } else {
+    onUpdate(form.paketId,data);
+  }
+};
 
   // Label header sesuai mode
   const titles = {
@@ -339,7 +362,7 @@ export default function PelatihanModal({
                     label: "Jumlah Modul",
                     value: `${item.totalModules} modul`,
                   },
-                  { label: "Durasi", value: item.duration },
+                  { label: "Durasi/Minggu", value: item.duration },
                   { label: "Masa Akses", value: item.accessPeriod },
                   { label: "Kesulitan", value: item.difficulty },
                   { label: "Metode", value: item.method },
@@ -367,6 +390,7 @@ export default function PelatihanModal({
               <Field label="Nama Paket" required error={errors.title}>
                 <input
                   type="text"
+                  required
                   placeholder="Masukkan nama paket"
                   value={form.title}
                   onChange={(e) => set("title", e.target.value)}
@@ -377,6 +401,7 @@ export default function PelatihanModal({
               <Field label="Harga (Rp)" required error={errors.price}>
                 <input
                   type="number"
+                  required
                   placeholder="Contoh: 299000"
                   min={0}
                   value={form.price}
@@ -388,6 +413,7 @@ export default function PelatihanModal({
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Durasi" required>
                   <select
+                    required
                     value={form.duration}
                     onChange={(e) => set("duration", e.target.value)}
                     className={inputCls()}
@@ -399,6 +425,7 @@ export default function PelatihanModal({
                 </Field>
                 <Field label="Masa Akses" required>
                   <select
+                    required
                     value={form.accessPeriod}
                     onChange={(e) => set("accessPeriod", e.target.value)}
                     className={inputCls()}
@@ -417,6 +444,7 @@ export default function PelatihanModal({
                   error={errors.totalModules}
                 >
                   <input
+                    required
                     type="number"
                     placeholder="Contoh: 12"
                     min={1}
@@ -427,6 +455,7 @@ export default function PelatihanModal({
                 </Field>
                 <Field label="Kesulitan" required>
                   <select
+                    required
                     value={form.difficulty}
                     onChange={(e) => set("difficulty", e.target.value)}
                     className={inputCls()}
@@ -442,6 +471,7 @@ export default function PelatihanModal({
 
               <Field label="Metode Pembelajaran" required>
                 <select
+                  required
                   value={form.method}
                   onChange={(e) => set("method", e.target.value)}
                   className={inputCls()}
@@ -480,28 +510,37 @@ export default function PelatihanModal({
               </div>
 
               {/* URL Gambar + preview */}
-              <Field label="URL Gambar">
+              <Field label="Gambar">
                 <input
-                  type="text"
-                  placeholder="https://example.com/image.jpg"
-                  value={form.image}
-                  onChange={(e) => set("image", e.target.value)}
+                  required
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+
+                    if (file) {
+                      set("image", file);
+                    }
+                  }}
                   className={inputCls()}
                 />
+
                 {form.image && (
-                  <img
-                    src={form.image}
-                    alt="Preview"
-                    className="mt-2 w-full h-28 object-cover rounded-lg border border-slate-200"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                    }}
-                  />
-                )}
+  <img
+    src={
+      form.image instanceof File
+        ? URL.createObjectURL(form.image)
+        : form.image
+    }
+    alt="Preview"
+    className="mt-2 w-full h-28 object-cover rounded-lg border border-slate-200"
+  />
+)}
               </Field>
 
               <Field label="Deskripsi">
                 <textarea
+                  required
                   rows={3}
                   placeholder="Deskripsi singkat mengenai paket ini..."
                   value={form.description}

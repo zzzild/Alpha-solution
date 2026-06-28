@@ -49,15 +49,15 @@ export default function PelatihanAdmin() {
     }
   };
 
-  const handleUpdate = async (formData) => {
-    try {
-      await updatePaket(formData.paketId, formData);
-      await fetchPaket();
-      setModal(null);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleUpdate = async (paketId, formData) => {
+  try {
+    await updatePaket(paketId, formData);
+    await fetchPaket();
+    setModal(null);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const handleDelete = async (paketId) => {
     try {

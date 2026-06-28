@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 export const AdminContext = createContext();
 
@@ -11,7 +12,7 @@ const AdminContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [pemesanan, setPemesanan] = useState([]);
   const [dashDataStats, setDashDataStats] = useState();
-  const [paket, setPaket] = useState([])
+  const [paket, setPaket] = useState([]);
 
   const loginAdmin = async (email, password) => {
     try {
@@ -54,9 +55,14 @@ const AdminContextProvider = (props) => {
         toast.success("Paket berhasil ditambahkan!");
         // getPaket();
       } else {
+        console.log(data.message);
+
         toast.error("Gagal menambahkan paket!");
       }
     } catch (error) {
+      console.log(error.response?.data);
+      console.log(error.response?.status);
+      console.log(error.message);
       console.error(error);
       toast.error("Terjadi kesalahan pada saat menambahkan paket!");
     }
@@ -112,104 +118,100 @@ const AdminContextProvider = (props) => {
 
   const getPaket = async () => {
     try {
-        const {data} = await axios.get(`${backendUrl}/api/user/paket`);
-        if (data.success) {
-            setPaket(data.daftarPaket);
-        } else {
-            console.error("Gagal mengambil data paket:", data.message);
+      const { data } = await axios.get(`${backendUrl}/api/user/paket`);
+      if (data.success) {
+        setPaket(data.daftarPaket);
+      } else {
+        console.error("Gagal mengambil data paket:", data.message);
         toast.error("Gagal ");
-        }
-    } catch (error) {
-        console.log(error);
-        toast.error("Gagal mengambil data paket")
-    }
-  }
-
-  const addKriteria = async (formData) => {
-    try {
-      const { data } = await axios.post(
-        `${backendUrl}/api/admin/add-kriteria`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${aToken}`,
-          },
-        },
-      );
-
-      if (data.success) {
-        toast.success("Kriteria berhasil ditambahkan!");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Terjadi kesalahan pada saat menambahkan kriteria!");
+      console.log(error);
+      toast.error("Gagal mengambil data paket");
     }
   };
 
-  const deleteKriteria = async (kriteriaId) => {
-    try {
-      const { data } = await axios.delete(
-        `${backendUrl}/api/admin/delete-kriteria/${kriteriaId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${aToken}`,
-          },
-        },
-      );
-      if (data.success) {
-        toast.success("Kriteria berhasil dihapus!");
-      } else {
-        toast.error("Gagal menghapus kriteria!");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Terjadi kesalahan pada saat menghapus kriteria!");
-    }
-  };
-
-  const updateKriteria = async (kriteriaId, formData) => {
-    try {
-      const { data } = await axios.put(
-        `${backendUrl}/api/admin/update-kriteria/${kriteriaId}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${aToken}`,
-          },
-        },
-      );
-      if (data.success) {
-        toast.success("Kriteria berhasil diperbarui!");
-      } else {
-        toast.error("Gagal memperbarui kriteria!");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Terjadi kesalahan pada saat memperbarui kriteria!");
-    }
-  };
-
-  // const getPemesanan = async () => {
+  // const addKriteria = async (formData) => {
   //   try {
-  //     const { data } = await axios.get(`${backendUrl}/api/admin/pemesanan`, {
-  //       headers: {
-  //         Authorization: `Bearer ${aToken}`,
+  //     const { data } = await axios.post(
+  //       `${backendUrl}/api/admin/add-kriteria`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${aToken}`,
+  //         },
   //       },
-  //     });
+  //     );
+
   //     if (data.success) {
-  //       setPemesanan(data.pemesanan);
-  //     } else {
-  //       console.error("Gagal mengambil data pemesanan:", data.message);
-  //       toast.error("Gagal mengambil data pemesanan!");
+  //       toast.success("Kriteria berhasil ditambahkan!");
   //     }
   //   } catch (error) {
-  //     console.error(
-  //       "Terjadi kesalahan pada saat mengambil data pemesanan:",
-  //       error,
-  //     );
-  //     toast.error("Terjadi kesalahan pada saat mengambil data pemesanan!");
+  //     console.error(error);
+  //     toast.error("Terjadi kesalahan pada saat menambahkan kriteria!");
   //   }
   // };
+
+  // const deleteKriteria = async (kriteriaId) => {
+  //   try {
+  //     const { data } = await axios.delete(
+  //       `${backendUrl}/api/admin/delete-kriteria/${kriteriaId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${aToken}`,
+  //         },
+  //       },
+  //     );
+  //     if (data.success) {
+  //       toast.success("Kriteria berhasil dihapus!");
+  //     } else {
+  //       toast.error("Gagal menghapus kriteria!");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("Terjadi kesalahan pada saat menghapus kriteria!");
+  //   }
+  // };
+
+  // const updateKriteria = async (kriteriaId, formData) => {
+  //   try {
+  //     const { data } = await axios.put(
+  //       `${backendUrl}/api/admin/update-kriteria/${kriteriaId}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${aToken}`,
+  //         },
+  //       },
+  //     );
+  //     if (data.success) {
+  //       toast.success("Kriteria berhasil diperbarui!");
+  //     } else {
+  //       toast.error("Gagal memperbarui kriteria!");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("Terjadi kesalahan pada saat memperbarui kriteria!");
+  //   }
+  // };
+
+  const getPemesanan = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/admin/pemesanan`);
+      if (data.success) {
+        setPemesanan(data.pemesanan);
+      } else {
+        console.error("Gagal mengambil data pemesanan:", data.message);
+        toast.error("Gagal mengambil data pemesanan");
+      }
+    } catch (error) {
+      console.error(
+        "Terjadi kesalahan pada saat mengambil data pemesanan:",
+        error,
+      );
+      toast.error("Gagal mengambil data pemesanan");
+    }
+  };
 
   const getDashboardStats = async () => {
     try {
@@ -230,6 +232,32 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  const verifyPayment = async (orderId, status) => {
+    try {
+      const { data } = await axios.put(
+        `${backendUrl}/api/admin/verify-payment/${orderId}`,
+        {
+          status,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${aToken}`,
+          },
+        },
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        getPemesanan();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Gagal memverifikasi pembayaran");
+    }
+  };
+
   const value = {
     backendUrl,
     aToken,
@@ -238,22 +266,47 @@ const AdminContextProvider = (props) => {
     addPaket,
     deletePaket,
     updatePaket,
-    addKriteria,
-    deleteKriteria,
-    updateKriteria,
-    // getPemesanan,
+    // addKriteria,
+    // deleteKriteria,
+    // updateKriteria,
+    getPemesanan,
     pemesanan,
     getDashboardStats,
     dashDataStats,
-    getPaket, paket
+    getPaket,
+    paket,
+    verifyPayment,
   };
 
   useEffect(() => {
+    getPemesanan();
     if (aToken) {
-      // getPemesanan();
       getDashboardStats();
       getPaket();
     }
+  }, [aToken]);
+
+  useEffect(() => {
+    if (!aToken) return;
+
+    const decoded = jwtDecode(aToken);
+
+    const expireTime = decoded.exp * 1000;
+    const remainingTime = expireTime - Date.now();
+
+    if (remainingTime <= 0) {
+      localStorage.removeItem("aToken");
+      setAToken("");
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      toast.info("Sesi login telah berakhir");
+      localStorage.removeItem("aToken");
+      setAToken("");
+    }, remainingTime);
+
+    return () => clearTimeout(timer);
   }, [aToken]);
 
   return (

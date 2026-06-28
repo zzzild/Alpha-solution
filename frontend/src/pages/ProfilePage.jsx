@@ -1,10 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import Navbar from "./../components/Navbar";
 import Footer from "./../components/Footer";
 
 export default function ProfilePage() {
-  const { userData, setToken, updateProfile } = useContext(AppContext);
+  const {
+    userData,
+    setToken,
+    updateProfile,
+    orderHistory,
+    getUserOrderHistory,
+  } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,6 +42,20 @@ export default function ProfilePage() {
   };
 
   const firstLetter = userData?.nameUser?.charAt(0)?.toUpperCase() || "U";
+
+  const totalTraining = orderHistory?.length || 0;
+
+  const paidCount =
+    orderHistory?.filter((o) => o.paymentStatus === "completed").length || 0;
+
+  const pendingCount =
+    orderHistory?.filter((o) => o.paymentStatus === "pending").length || 0;
+
+  useEffect(() => {
+    if (userData) {
+      getUserOrderHistory();
+    }
+  }, [userData]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -104,15 +124,21 @@ export default function ProfilePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <StatCard
-              title="Pelatihan Diikuti"
-              value="0"
-              color="text-gray-900"
+              title="Pelatihan Saya"
+              value={totalTraining}
+              color="text-blue-600"
             />
-            <StatCard title="Sertifikat" value="0" color="text-blue-600" />
+
             <StatCard
-              title="Pelatihan Selesai"
-              value="0"
-              color="text-red-500"
+              title="Pembayaran Berhasil"
+              value={paidCount}
+              color="text-green-600"
+            />
+
+            <StatCard
+              title="Menunggu Konfirmasi"
+              value={pendingCount}
+              color="text-yellow-500"
             />
           </div>
         </div>

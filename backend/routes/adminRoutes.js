@@ -1,5 +1,5 @@
 import express from 'express';
-import { loginAdmin, registerAdmin, addPaket, deletePaket, updatePaket, addKriteria, deleteKriteria, updateKriteria, getPemesanan, getDashStats } from '../controllers/adminController.js';
+import { loginAdmin, registerAdmin, addPaket, deletePaket, updatePaket, addKriteria, deleteKriteria, updateKriteria, getPemesanan, getDashStats, verifyPayment } from '../controllers/adminController.js';
 import { getPaket } from '../controllers/userControllers.js';
 import authAdmin from '../middlewares/authAdmin.js';
 import upload from '../middlewares/multer.js';
@@ -17,7 +17,9 @@ adminRouter.get('/daftar-paket', authAdmin, getPaket)
 adminRouter.post('/add-kriteria', authAdmin, addKriteria);
 adminRouter.delete('/delete-kriteria/:kriteriaId', authAdmin, deleteKriteria);
 adminRouter.put('/update-kriteria/:kriteriaId', authAdmin, updateKriteria);
-adminRouter.get('/pemesanan', authAdmin, getPemesanan);
 adminRouter.get('/dashboard-stats', authAdmin, getDashStats);
+
+adminRouter.get('/pemesanan', getPemesanan);
+adminRouter.put('/verify-payment/:orderId', authAdmin, verifyPayment)
 
 export default adminRouter;

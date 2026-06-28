@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { generateInvoice } from "../utils/GenerateInvoices.js";
 
 const MyOrders = () => {
   const { orderHistory, getUserOrderHistory, submitPayment } =
@@ -109,8 +110,17 @@ const MyOrders = () => {
                   )}
 
                   {order.paymentStatus === "completed" && (
-                    <div className="mt-4 text-green-600 font-medium">
-                      Pesanan Selesai
+                    <div className="mt-6 border-t pt-4 flex justify-between items-center">
+                      <div className="text-green-600 font-semibold">
+                        ✅ Pembayaran Berhasil
+                      </div>
+
+                      <button
+                        onClick={() => generateInvoice(order)}
+                        className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                      >
+                        Download Invoice
+                      </button>
                     </div>
                   )}
 

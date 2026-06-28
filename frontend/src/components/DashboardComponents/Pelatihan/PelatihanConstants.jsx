@@ -38,29 +38,29 @@ export const INITIAL_DATA = [
 export const DIFFICULTY_OPTIONS = ["pemula", "menengah", "lanjutan"];
 
 /** Pilihan metode pembelajaran */
-export const METHOD_OPTIONS = ["online", "offline", "hybrid"];
+export const METHOD_OPTIONS = ["vidio", "live class", "hybrid"];
 
 /** Pilihan durasi kursus */
 export const DURATION_OPTIONS = [
-  "1 minggu",
-  "2 minggu",
-  "4 minggu",
-  "5 minggu",
-  "6 minggu",
-  "8 minggu",
-  "10 minggu",
-  "12 minggu",
+  1,
+  2,
+  4,
+  5,
+  6,
+  8,
+  10,
+  12,
 ];
 
 /** Pilihan masa akses */
 export const ACCESS_OPTIONS = [
-  "1 bulan",
-  "2 bulan",
-  "3 bulan",
-  "4 bulan",
-  "6 bulan",
-  "12 bulan",
-  "Selamanya",
+  1,
+  2,
+  3,
+  4,
+  6,
+  12,
+  24,
 ];
 
 /** Template form kosong */

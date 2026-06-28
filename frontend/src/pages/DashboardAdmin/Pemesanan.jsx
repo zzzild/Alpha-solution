@@ -1,57 +1,90 @@
-import { useState } from "react";
-import { INITIAL_DATA, STATUS_OPTIONS } from "../../components/DashboardComponents/Pemesanan/PemesananConstants";
+import { useContext, useMemo, useState } from "react";
+import { AdminContext } from "../../context/AdminContext";
+import { exportPemesananPDF } from "../../utils/ExportPemesananPdf";
+
+import { STATUS_OPTIONS } from "../../components/DashboardComponents/Pemesanan/PemesananConstants";
 import PemesananToolbar from "../../components/DashboardComponents/Pemesanan/PemesananToolbar";
 import PemesananTable from "../../components/DashboardComponents/Pemesanan/PemesananTable";
 import PemesananModal from "../../components/DashboardComponents/Pemesanan/PemesananModal";
 
-/**
- * PemesananPage — halaman manajemen pemesanan kursus untuk panel admin.
- */
 export default function PemesananPage() {
-  const [data, setData] = useState(INITIAL_DATA);
+  const { pemesanan, verifyPayment } = useContext(AdminContext);
+
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("semua");
   const [modal, setModal] = useState(null);
 
-  const handleCreate = (form) => {
-    setData((prev) => [
-      { ...form, id: Date.now(), harga: Number(form.harga) },
-      ...prev,
-    ]);
-    setModal(null);
+  const data = useMemo(() => {
+  return [...(pemesanan || [])]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // terbaru dulu
+    .map((item) => ({
+      id: item.pemesananId,
+
+      namaPemesan: item.userData?.nameUser || "-",
+      email: item.userData?.email || "-",
+      paket: item.paketData?.namePaket || "-",
+      harga: item.paketData?.price || 0,
+
+      status:
+        item.paymentStatus === "pending"
+          ? "menunggu"
+          : item.paymentStatus === "completed"
+          ? "dikonfirmasi"
+          : item.paymentStatus === "rejected"
+          ? "ditolak"
+          : "expired",
+
+      phone: item.userData?.phone || "-",
+
+      tanggal: item.createdAt,
+
+      buktiPembayaran: item.paymentProof,
+    }));
+}, [pemesanan]);
+
+  const handleCreate = () => {};
+
+  const handleUpdate = () => {};
+
+  const handleDelete = () => {};
+
+  const handleStatusChange = async (id, status) => {
+    let paymentStatus = "";
+
+    switch (status) {
+      case "dikonfirmasi":
+        paymentStatus = "completed";
+        break;
+
+      case "ditolak":
+        paymentStatus = "rejected";
+        break;
+
+      default:
+        return;
+    }
+
+    await verifyPayment(id, paymentStatus);
   };
 
-  const handleUpdate = (form) => {
-    setData((prev) =>
-      prev.map((d) =>
-        d.id === form.id ? { ...form, harga: Number(form.harga) } : d,
-      ),
-    );
-    setModal(null);
-  };
-
-  const handleDelete = (id) => {
-    setData((prev) => prev.filter((d) => d.id !== id));
-    setModal(null);
-  };
-
-  const handleStatusChange = (id, newStatus) => {
-    setData((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, status: newStatus } : d)),
-    );
-  };
-
+  // =============================
+  // Filter
+  // =============================
   const filtered = data.filter((d) => {
     const matchSearch =
       d.namaPemesan.toLowerCase().includes(search.toLowerCase()) ||
       d.paket.toLowerCase().includes(search.toLowerCase());
+
     const matchStatus = filterStatus === "semua" || d.status === filterStatus;
+
     return matchSearch && matchStatus;
   });
 
   const counts = {
     menunggu: data.filter((d) => d.status === "menunggu").length,
+
     dikonfirmasi: data.filter((d) => d.status === "dikonfirmasi").length,
+
     ditolak: data.filter((d) => d.status === "ditolak").length,
   };
 
@@ -62,13 +95,19 @@ export default function PemesananPage() {
           <h1 className="text-xl font-bold text-slate-800">
             Manajemen Pemesanan
           </h1>
+
           <p className="text-sm text-slate-500 mt-0.5">
             {data.length} pemesanan · {counts.menunggu} menunggu konfirmasi
           </p>
+          <button
+            onClick={() => exportPemesananPDF(filtered)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 cursor-pointer"
+          >
+            Export PDF
+          </button>
         </div>
       </div>
 
-      {/* Stat cards — klik untuk filter per status */}
       <div className="grid grid-cols-3 gap-3">
         {[
           {
@@ -100,11 +139,15 @@ export default function PemesananPage() {
             }
             className={`rounded-xl border p-3 text-left transition-all cursor-pointer ${
               filterStatus === key
-                ? `${bg} ${border} ring-2 ring-offset-1 ${border.replace("border-", "ring-")}`
+                ? `${bg} ${border} ring-2 ring-offset-1 ${border.replace(
+                    "border-",
+                    "ring-",
+                  )}`
                 : "bg-white border-slate-100 hover:bg-slate-50"
             }`}
           >
             <p className={`text-xl font-bold ${color}`}>{counts[key]}</p>
+
             <p className="text-xs text-slate-500 mt-0.5 capitalize">{label}</p>
           </button>
         ))}

@@ -368,6 +368,7 @@ const PemesananModal = ({ modal, onClose, onCreate, onUpdate, onDelete }) => {
                   { label: "Paket", value: item.paket },
                   { label: "Tanggal", value: formatDate(item.tanggal) },
                   { label: "Status", value: item.status },
+                  { label: "Phone", value: item.phone },
                 ].map(({ label, value }) => (
                   <div key={label} className="bg-slate-50 rounded-xl p-3">
                     <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-1">

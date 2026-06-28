@@ -29,7 +29,7 @@ const loginAdmin = async (req, res) => {
     const atoken = jwt.sign(
       { id: admin._id, role: admin.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" },
+      { expiresIn: "3h" },
     );
 
     res.json({ success: true, message: "Login successful", atoken });
@@ -346,6 +346,56 @@ const getDashStats = async (req, res) => {
   }
 };
 
+const verifyPayment = async (req, res) => {
+  try {
+    const {orderId} = req.params;
+    const {status} = req.body;
+
+    if (!["completed", "rejected"].includes(status)) {
+      return res.json({
+        success: false,
+        message:"Status tidak valid",
+      })
+    }
+
+    const order = await pemesananModel.findOne({
+      pemesananId : orderId,
+    });
+
+    if (!order) {
+      return res.json({
+        success: false,
+        message:"Pesanan tidak ditemukan",
+      })
+    }
+
+    await pemesananModel.findOneAndUpdate(
+      {
+        pemesananId: orderId,
+      },
+      {
+        paymentStatus: status,
+      }
+    );
+
+    return res.json({
+      success: true,
+      message:
+        status === "completed"
+        ? "Pembayaran berhasil dikonfirmasi"
+        : 'Pembayaran ditolak'
+    });
+
+  } catch (error) {
+    console.log(error);
+    
+    return res.json({
+      success: false,
+      message: "Terjadi kesalahan"
+    })
+  }
+}
+
 export {
   loginAdmin,
   registerAdmin,
@@ -357,4 +407,5 @@ export {
   updateKriteria,
   getPemesanan,
   getDashStats,
+  verifyPayment
 };

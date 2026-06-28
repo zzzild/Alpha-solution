@@ -102,7 +102,7 @@ export const loginUser = async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "3h",
       },
     );
 
@@ -232,7 +232,7 @@ export const orderPaket = async (req, res) => {
     const { paketId } = req.body;
     const userId = req.userId;
 
-    const paketData = await paketModel.findOne({ paketId }).select("-password");
+    const paketData = await paketModel.findOne({ paketId });
 
     if (!paketData) {
       return res.json({ success: false, message: "Paket not found" });
@@ -265,6 +265,7 @@ if (existingOrder) {
       userData,
       paketData: {
         namePaket: paketData.namePaket,
+        price: paketData.price
       },
     };
     const newOrder = new pemesananModel(orderData);
@@ -372,9 +373,6 @@ export const uploadPaymentProof = async (req, res) => {
       {
         paymentProof:
           upload.secure_url,
-
-        paymentStatus:
-          "completed",
       }
     );
 

@@ -30,16 +30,6 @@ const NAV_ITEMS = [
       },
     ],
   },
-  {
-    group: "Akun",
-    items: [
-      {
-        to: "/dashboard/profil",
-        label: "Profil",
-        icon: <PersonIcon />,
-      },
-    ],
-  },
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {

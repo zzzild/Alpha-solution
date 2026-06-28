@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-
+import { jwtDecode } from "jwt-decode";
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
@@ -139,24 +139,26 @@ const AppContextProvider = (props) => {
   };
 
   const getRecommendation = async (formData) => {
-  try {
-    const { data } = await axios.post(
-      `${backendUrl}/api/user/recommendation`,
-      formData
-    );
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/user/recommendation`,
+        formData,
+      );
 
-    if (!data.success) {
-      toast.info("Tidak ada rekomendasi yang cocok dengan kriteria yang dipilih.");
+      if (!data.success) {
+        toast.info(
+          "Tidak ada rekomendasi yang cocok dengan kriteria yang dipilih.",
+        );
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal mendapatkan rekomendasi.");
       return null;
     }
-
-    return data;
-  } catch (error) {
-    console.error(error);
-    toast.error("Gagal mendapatkan rekomendasi.");
-    return null;
-  }
-};
+  };
 
   const makeOrder = async (paketId) => {
     try {
@@ -264,6 +266,30 @@ const AppContextProvider = (props) => {
       loadProfileData();
     }
   }, [token]);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const decoded = jwtDecode(token);
+
+    const expireTime = decoded.exp * 1000;
+    const remainingTime = expireTime - Date.now();
+
+    if (remainingTime <= 0) {
+      localStorage.removeItem("aToken");
+      setToken("");
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      toast.info("Sesi login telah berakhir");
+      localStorage.removeItem("aToken");
+      setToken("");
+    }, remainingTime);
+
+    return () => clearTimeout(timer);
+  }, [token]);
+
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
   );

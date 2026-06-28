@@ -17,15 +17,19 @@ const pemesananSchema = new mongoose.Schema({
   paketId: {
     type: String,
     required: true,
-  },
+},
   
   userData: {type: Object, required: true},
   paketData: {type: Object, required: true},
+
+  paymentProof: { type: String},
+
   paymentStatus: {
       type: String,
       enum: [
         "pending",
         "completed",
+        "rejected",
         "expired",
       ],
       default: "pending",
