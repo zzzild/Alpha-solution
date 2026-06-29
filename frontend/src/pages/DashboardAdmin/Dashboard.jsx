@@ -13,28 +13,24 @@ const Dashboard = () => {
     {
       label: "Total Paket",
       value: dashDataStats?.totalPaket || 0,
-      icon: "ti-package",
       color: "text-blue-600",
       bg: "bg-blue-50",
     },
     {
       label: "Total User",
       value: dashDataStats?.totalUser || 0,
-      icon: "ti-users",
       color: "text-emerald-600",
       bg: "bg-emerald-50",
     },
     {
       label: "Total Pemesanan",
       value: dashDataStats?.totalPemesanan || 0,
-      icon: "ti-shopping-cart",
       color: "text-violet-600",
       bg: "bg-violet-50",
     },
     {
       label: "Total Kriteria",
       value: dashDataStats?.totalKriteria || 0,
-      icon: "ti-list-details",
       color: "text-amber-600",
       bg: "bg-amber-50",
     },
@@ -56,14 +52,10 @@ const Dashboard = () => {
             key={s.label}
             className="bg-white rounded-xl border border-slate-100 p-4 flex items-center gap-4 shadow-sm"
           >
-            <div
-              className={`${s.bg} ${s.color} w-11 h-11 rounded-xl flex items-center justify-center`}
-            >
-              <i className={`ti ${s.icon} text-xl`} />
-            </div>
-
             <div>
-              <p className="text-2xl font-bold text-slate-800">{s.value}</p>
+              <p className={`${s.color} text-2xl font-bold`}>
+                {s.value}
+              </p>
 
               <p className="text-xs text-slate-500">{s.label}</p>
             </div>
