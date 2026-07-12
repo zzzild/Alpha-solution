@@ -56,15 +56,8 @@ const Dashboard = () => {
             key={s.label}
             className="bg-white rounded-xl border border-slate-100 p-4 flex items-center gap-4 shadow-sm"
           >
-            <div
-              className={`${s.bg} ${s.color} w-11 h-11 rounded-xl flex items-center justify-center`}
-            >
-              <i className={`ti ${s.icon} text-xl`} />
-            </div>
-
             <div>
-              <p className="text-2xl font-bold text-slate-800">{s.value}</p>
-
+              <p className={`${s.color} text-2xl font-bold`}>{s.value}</p>
               <p className="text-xs text-slate-500">{s.label}</p>
             </div>
           </div>

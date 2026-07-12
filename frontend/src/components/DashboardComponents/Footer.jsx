@@ -4,9 +4,6 @@ const Footer = () => {
       <div className="px-6 py-6">
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center space-x-3 text-gray-600">
-            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <img src="" alt="Logo" />
-            </div>
             <div>
               <div className="font-semibold text-gray-900">ALPHA SOLUSI</div>
               <div className="text-xs text-gray-500">

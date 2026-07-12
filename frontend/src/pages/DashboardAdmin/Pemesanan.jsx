@@ -15,32 +15,32 @@ export default function PemesananPage() {
   const [modal, setModal] = useState(null);
 
   const data = useMemo(() => {
-  return [...(pemesanan || [])]
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // terbaru dulu
-    .map((item) => ({
-      id: item.pemesananId,
+    return [...(pemesanan || [])]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // terbaru dulu
+      .map((item) => ({
+        id: item.pemesananId,
 
-      namaPemesan: item.userData?.nameUser || "-",
-      email: item.userData?.email || "-",
-      paket: item.paketData?.namePaket || "-",
-      harga: item.paketData?.price || 0,
+        namaPemesan: item.userData?.nameUser || "-",
+        email: item.userData?.email || "-",
+        paket: item.paketData?.namePaket || "-",
+        harga: item.paketData?.price || 0,
 
-      status:
-        item.paymentStatus === "pending"
-          ? "menunggu"
-          : item.paymentStatus === "completed"
-          ? "dikonfirmasi"
-          : item.paymentStatus === "rejected"
-          ? "ditolak"
-          : "expired",
+        status:
+          item.paymentStatus === "pending"
+            ? "menunggu"
+            : item.paymentStatus === "completed"
+              ? "dikonfirmasi"
+              : item.paymentStatus === "rejected"
+                ? "ditolak"
+                : "expired",
 
-      phone: item.userData?.phone || "-",
+        phone: item.userData?.phone || "-",
 
-      tanggal: item.createdAt,
+        tanggal: item.createdAt,
 
-      buktiPembayaran: item.paymentProof,
-    }));
-}, [pemesanan]);
+        buktiPembayaran: item.paymentProof,
+      }));
+  }, [pemesanan]);
 
   const handleCreate = () => {};
 
@@ -95,17 +95,16 @@ export default function PemesananPage() {
           <h1 className="text-xl font-bold text-slate-800">
             Manajemen Pemesanan
           </h1>
-
           <p className="text-sm text-slate-500 mt-0.5">
             {data.length} pemesanan · {counts.menunggu} menunggu konfirmasi
           </p>
-          <button
-            onClick={() => exportPemesananPDF(filtered)}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 cursor-pointer"
-          >
-            Export PDF
-          </button>
         </div>
+        <button
+          onClick={() => exportPemesananPDF(filtered)}
+          className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 active:scale-95 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-150 shadow-sm shadow-blue-200 cursor-pointer"
+        >
+          Export PDF
+        </button>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
